@@ -127,3 +127,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SECRET_KEY = 'tHEQpu_aXvUYqh4gSNBaO4pilrEu1uQhrdt2ekYZGmw=' # Usa la clave generada aquí
+
