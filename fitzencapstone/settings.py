@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'principal',
+    'cuentas',
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 DEFAULT_WIDTH = 460
 
 DEFAULT_HEIGHT = 325
@@ -135,4 +139,12 @@ DEFAULT_HEIGHT = 325
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SECRET_KEY = 'tHEQpu_aXvUYqh4gSNBaO4pilrEu1uQhrdt2ekYZGmw=' # Usa la clave generada aquí
+
+#CRISPY FORMS
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # permite mandar "correos"
+
+AUTH_USER_MODEL = 'cuentas.UserBase'
+
 

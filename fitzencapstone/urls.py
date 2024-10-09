@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('principal.urls', namespace='principal')), #asi se llama la app creada, la que contiene las url de las paginas.
-
+    path('cuentas/',include('cuentas.urls', namespace='cuentas')),
 ]
 
 
