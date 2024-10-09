@@ -1,0 +1,58 @@
+{% extends "../base.html"%}
+{% block title %} FitZen, tu compra segura {% endblock %}
+{% block stylesheet %} 
+ 
+{% endblock %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+        
+    {% for producto in producto %}
+
+    <div class="col">
+      
+      <div class="card shadow-sm albumcard">
+        <a href="{{producto.get_absolute_url}}" style="text-decoration: none;">
+
+      <img style="width: auto; height: 220px;" class="img-fluid" alt="Responsive image" src="{{ producto.imagen.url }}">
+      <hr style="margin-top: 0px; margin-bottom: 0px; color: black; padding-top: 1px;">
+      
+        <div class="card-body">
+          
+          
+              <p class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                <span class="text-dark text-decoration-none"  >{{ producto.titulo }}</span>
+              </p>
+            
+
+          <p class="card-text">
+            
+            <h4>$ {{producto.precio}}</h4>
+
+            {% if producto.stock > 0 %}
+            <p>Stock: {{ producto.stock}} unidades</p>
+
+            {% else %}
+            <p>Producto agotado</p>
+            {% endif %}
+          </p>
+          
+          <div class="d-flex justify-content-between align-items-center">
+          </div>
+        </div>
+        </a>
+      </div>
+      {% endfor %}
+
+    </div>
+
+
+
+
+{% endblock %}

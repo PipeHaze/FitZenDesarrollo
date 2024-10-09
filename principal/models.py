@@ -45,7 +45,7 @@ class Producto(models.Model):
         ordering = ('-creado',)
 
     def get_absolute_url(self):
-        return reverse('tiendita:producto_detalle', args=[self.encrypted_slug])
+        return reverse('principal:informacion_productos', args=[self.encrypted_slug]) # se le asigna la url que va a mostrar informacion mas detallada del producto
     
     def save(self, *args, **kwargs):
     # Redimensionar la imagen antes de guardarla

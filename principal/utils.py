@@ -12,7 +12,7 @@ def resize_image(image):
     img = Image.open(image)
 
     # Redimensionar la imagen al tamaño predeterminado
-    img.thumbnail((default_width, default_height), Image.ANTIALIAS)
+    img.thumbnail((default_width, default_height), Image.LANCZOS)
 
     # Guardar la imagen redimensionada
     img.save(image.path)
