@@ -150,4 +150,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # permite manda
 
 AUTH_USER_MODEL = 'cuentas.UserBase'
 
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/account/login/'
+
 

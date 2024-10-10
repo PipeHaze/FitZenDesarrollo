@@ -1,0 +1,37 @@
+{% extends "base.html"%}
+{% block title %} Inicia Sesion {% endblock %}
+{% load static %}
+
+
+
+{% block content %}
+
+<form action="{% url 'cuentas:login' %}" method="post">
+
+    <h3>Inicia Sesion</h3>
+    {% csrf_token %}
+
+    {% if form.errors %}
+        <div class="alert alert-primary" role="alert">
+            Error: El usuario o contraseña no son correctas!
+        </div>
+    {% endif %}
+
+    <div class="formulin">
+        <label class="form-label">{{ form.username.label }}</label>
+        {{ form.username }}
+    </div>
+
+    <div class="formulin">
+        <label class="form-label">{{ form.password.label }}</label>
+        {{ form.password }}
+    </div>
+
+    <div class="input-group mb-3">
+        <button class="btn btn-lg btn-primary w-100 fs-6">Entrar</button>
+    </div>
+
+    
+</form>
+
+{% endblock %}
