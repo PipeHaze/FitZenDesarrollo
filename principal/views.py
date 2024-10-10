@@ -16,3 +16,8 @@ def producto_info(request, encrypted_slug):
 
     producto = get_object_or_404(Producto, slug=slug, en_stock=True)
     return render(request, 'app/infoproductos.html', {'producto': producto})
+
+def categoria_productos(request, categoria_slug = None):
+    categoria = get_object_or_404(Categoria, slug = categoria_slug)
+    productos = Producto.objects.filter(categoria = categoria)
+    return render(request,'app/categorias.html', {'categoria': categoria, 'productos': productos})

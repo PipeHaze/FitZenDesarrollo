@@ -20,9 +20,48 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
 
+<nav class="navbar navbar-expand-lg" style="background-color: rgb(78, 171, 106);">
+    <div class="container-fluid">
+        <a href="/" class="enlace">
+            <img src="" alt="" class="logo rounded" style="border: 2px; width: 70px; height: 60px;">
+        </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div" class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul  class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+          <li class="nav-item">
+          </li>
+          <li class="nav-item dropdown my-auto">
+            <a class="nav-link dropdown-toggle" style="color: rgb(213, 213, 213);font-size: medium;" href="#" id="navbarDropdown"
+                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Categorias
+  
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'principal:paginaprincipal' %}">Todo</a></li>
+                {% for c in categorias %}
+                <li {% if categoria.slug == c.slug %} class="selected" {% endif %}>
+                    <a class="dropdown-item" href="{{c.get_absolute_url }}"> {{ c.nombre | title }}</a>
+                </li>
+                {% endfor %}
+
+                
+            </ul>
+
+          </li>
+          
+                
+                
+      </div>
+    
+    </div>
+  </nav>
+
 
 <main>
     <div id="content">{% block content %} {% endblock %}</div>
+    
     
 
 </main>
