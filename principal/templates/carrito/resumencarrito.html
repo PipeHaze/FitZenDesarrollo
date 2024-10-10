@@ -1,0 +1,168 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %} Resumen de tu carrito{% endblock %}
+{% block content %}
+
+<main class="pt-5">
+    <div class="container" >
+      <div class="col-12">
+        <h1 class="h5">Tu carrito de compras</h1>
+      </div>
+      <div class="col-12">
+        <p>Maneja tus <b>productos</b> en tu carrito</p>
+      </div>
+      <hr />
+    </div>
+    <div class="container" style="max-width: 1000px">
+      
+      <div class="row g-3">
+        <div class="col-12 bg-light p-3 d-flex justify-content-between">
+          <div class="d-flex d-flex-inline">
+            <div class="pe-3">Pedido</div>
+            <div class="dropdown">
+            <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link" id="dropdownLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Opciones de envio
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            </a>
+  
+            <ul class="dropdown-menu" aria-labelledby="dropdownLink">
+              <li class="item small">Entrega al dia siguiente</li>
+              <li class="item small">Entrega Premium</li>
+            </ul>
+            </div>
+          </div>
+          <div class="text-end">
+            
+            <div class="">Sub Total: <span class="fw-bold">$</span><div id="subtotal" class="d-inline-flex fw-bold">{{carritocompras.get_subtotal_precio}}</div></div>
+            <div id="">Envio <span class="small">(entrega al dia siguiente)</span>: <span class="fw-bold">$3500</span></div>
+            <div class="pt-2">Total a pagar: <span class="fw-bold h5">$</span><span id="total" class="fw-bold h5">{{carritocompras.get_total_precio}}</span></div>
+            
+          </div>
+        </div>
+        <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
+          <div class="d-grid gap-2 ">
+            <button class="btn btn-light" type="button">Guardar para mas tarde</button>
+          </div>
+        </div>
+        <div class="col-md-7 col-lg-8 p-0">
+  
+          {% for item in carritocompras %} 
+          {% with producto=item.producto %}
+  
+          <div class="card mb-3 border-0 product-item" data-index="{{producto.id}}">
+            <div class="row g-0">
+              <div class="col-md-2 d-none d-md-block">
+                <img class="img-fluid mx-auto d-block" alt="Responsive image"
+                    src="{{ producto.imagen.url }}" />
+              </div>
+              <div class="col-md-10 ps-md-3">
+                <div class="card-body p-1">
+                  <a class="text-decoration-none text-reset" href="#">
+                    <p class="card-text pb-3">{{producto.titulo}}</p>
+                  </a>
+                      <label for="select">Cantidad</label>
+                      <select id="select{{producto.id}}" style="width:50px;height:31px;">
+                        <option value="" selected disabled hidden>{{item.qty}}</option>
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                        <option value="">4</option>
+                        <option value="">5</option>
+                        <option value="">6</option>
+                        <option value="">7</option>
+                        <option value="">8</option>
+                        <option value="">9</option>
+                        <option value="">10</option>
+                      </select>
+                  <a type="button" id="update-button" data-index="{{producto.id}}" class="update-button text-decoration-none small ps-3">Modificar</a>
+                  <a type="button" id="delete-button" data-index="{{producto.id}}" class="delete-button text-decoration-none small">Eliminar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endwith %} 
+          {% endfor %}
+        </div>
+      </div>
+      
+    </div>
+  </main>
+
+  <script>
+    //agregar
+    $(document).on('click', '#agregar-button', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "carritocompras:carrito_agregar" %}',
+            data: {
+                productoid: $('#agregar-button').val(),
+                productoqty: $('#select').val(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function(json){
+                document.getElementById("carrito-qty").innerHTML = json.qty
+            },
+            error: function(xhr, errmsg, err){}
+        });
+    })
+    //eliminar
+    $(document).on('click', '.delete-button', function(e){
+        e.preventDefault();
+        var prodid = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "carritocompras:carrito_eliminar" %}',
+            data: {
+                productoid: $(this).data('index'),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function(json){
+              $('.product-item[data-index="'+ prodid + '"]').remove();
+
+              if(json.qty == 0){
+                total = 0
+                subtotal = 0
+              } else{
+                total = parseFloat(json.subtotal + 3.500).toFixed(2);
+                subtotal = json.subtotal
+              }
+
+              document.getElementById("subtotal").innerHTML = json.subtotal;
+              document.getElementById("carrito-qty").innerHTML = json.qty;
+              document.getElementById("total").innerHTML = json.total;
+
+            },
+            error: function(xhr, errmsg, err){}
+        });
+    })
+    //modificar
+    $(document).on('click', '.update-button', function(e){
+        e.preventDefault();
+        var prodid = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "carritocompras:carrito_modificar" %}',
+            data: {
+                productoid: $(this).data('index'),
+                productoqty: $('#select' + prodid + ' option:selected').text(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function(json) {
+              total = (parseInt(json.subtotal));
+              document.getElementById("carrito-qty").innerHTML = json.qty;
+              document.getElementById("subtotal").innerHTML = json.subtotal;
+              document.getElementById("total").innerHTML = total;
+
+            },
+            error: function(xhr, errmsg, err){}
+        });
+    })
+  </script>
+
+{% endblock %}

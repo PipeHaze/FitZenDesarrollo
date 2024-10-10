@@ -46,6 +46,28 @@
         </div>
     </div>
 
+    <script>
+
+    $(document).on('click', '#agregar-button', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "carritocompras:carrito_agregar" %}',
+            data: {
+                productoid: $('#agregar-button').val(),
+                productoqty: $('#select option:selected').text(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function(json){
+                document.getElementById("carrito-qty").innerHTML = json.qty
+            },
+            error: function(xhr, errmsg, err){}
+        });
+    })
+
+    </script>
+
     
 {% endblock %}
 
