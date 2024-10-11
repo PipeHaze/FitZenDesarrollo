@@ -12,4 +12,6 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='account/registration/login.html',
                                                 form_class=UserLoginForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/cuentas/login/'),name='logout'),
+    path('registro/', views.registro_usuarios, name='registro'),
+    path('activate/<slug:uidb64>/<slug:token>',views.account_activate, name='activate'),
 ]
