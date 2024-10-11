@@ -1,0 +1,110 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %} Formulario de pago {% endblock %}
+{% block content %}
+
+    <style>
+        .account-form input {
+            border: 2px solid #ccc;
+            height: calc(2em + .75rem + 2px);
+        }
+        .form-control {
+            border-color: 2px solid #ccc;
+        }
+        .account-form input:focus{
+            border-color: #1497ff;
+            box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075), 0, 0, 0px rgba(255, 0 ,0 , 0.6);
+        }
+    </style>
+
+<div class="container-fluid">
+    <div class="">
+      <div class="">
+        <div class="">
+          <div class="container">
+            <div class="">
+              <div id="payment-form" class="col-12 col-lg-6 mx-auto">
+                <h3 class="mb-3">Direccion de Envio</h3>
+                <!-- Error messages in this element -->
+                <div id="card-errors" class="a" role="alert"></div>
+                <form id="payment-form">
+                  <div class="row g-3">
+                    <div class="col-sm-7">
+                      <label for="firstName" class="form-label">Nombre Cliente</label>
+                      <input type="text" class="form-control" id="custName" placeholder="" required>
+                      <div class="invalid-feedback">
+                        Se requiere un nombre valido
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="email" class="form-label">Correo <span class="text-muted">(Opcional)</span></label>
+                      <input type="email" class="form-control" id="email" placeholder="ingresacorreo@ejemplo.com">
+                      <div class="invalid-feedback">
+                        Ingresa un correo valido para ver el estado de tu envio.
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="address" class="form-label">Direccion</label>
+                      <input type="text" class="form-control" id="custAdd" placeholder="Ingresa Una Direccion" required>
+                      <div class="invalid-feedback">
+                        Ingresa una direccion de envio.
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="address2" class="form-label"> 2 Direccion <span
+                          class="text-muted">(Opcional)</span></label>
+                      <input type="text" class="form-control" id="custAdd2" placeholder="Casa o Departamento">
+                    </div>
+                    <div class="col-md-5">
+                      <label for="country" class="form-label">Pais</label>
+                      <select class="form-select" id="country" required>
+                        <option value="">Cambiar...</option>
+                        <option>Chile</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Ingresa un pais valido.
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="state" class="form-label">Region</label>
+                      <select class="form-select" id="state" required>
+                        <option value="">Cambiar...</option>
+                        <option>Region Metropolitana</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Ingresa una region valida.
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label for="Postcode" class="form-label">Codigo Postal</label>
+                      <input type="text" class="form-control" id="postCode" placeholder="" required>
+                      <div class="invalid-feedback">
+                        El codigo postal es requerido.
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="my-4">
+                  <h4 class="mb-3">Metodo de Pago:</h4>
+                  <label for="card-element">Tarjeta Debito o Credito</label>
+                  <div id="card-element" class="form-control form-control-payment">
+                    <!-- Ya se ven las formas de pago :D -->
+                  </div>
+                  <hr class="my-4">
+                  <button id="submit" class="btn btn-primary w-100 fw-bold" data-secret="{{ client_secret }}">Pagar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script>
+        
+        var CSRF_TOKEN = '{{ csrf_token }}';
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static 'pago/js/pago.js' %}" data-rel-js></script>
+
+{% endblock %}

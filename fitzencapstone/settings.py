@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'principal',
     'cuentas',
     'carritocompras',
+    'pago',
 ]
 
 MIDDLEWARE = [
@@ -152,5 +153,9 @@ AUTH_USER_MODEL = 'cuentas.UserBase'
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/account/login/'
+
+#PAGAR STRIPE
+STRIPE_ENDPOINT_SECRET = 'whsec_3b152fd19dc7e23c8f2a9f5bc4ce50be53a6aa35e57df1bcc2824f6398c09e4f'
+
 
 
