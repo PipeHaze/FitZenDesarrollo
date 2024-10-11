@@ -25,6 +25,7 @@ urlpatterns = [
     path('cuentas/',include('cuentas.urls', namespace='cuentas')),
     path('carritocompras/',include('carritocompras.urls', namespace='carritocompras')),
     path('pago/',include('pago.urls', namespace='pago')),
+    path('pedidos/',include('pedidos.urls', namespace='pedidos')),
 
 
 ]

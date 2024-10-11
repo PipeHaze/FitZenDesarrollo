@@ -9,4 +9,7 @@ app_name = 'pago'
 
 urlpatterns = [
     path('', views.carritoViews, name='carritopago'),
+    path('orderplaced/',views.order_placed, name= 'order_placed'),
+    path('webhook/', views.stripe_webhook, name= 'stripe_webhook'),
+
 ]

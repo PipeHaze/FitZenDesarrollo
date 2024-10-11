@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from carritocompras.carritocompras import Carrito
+from pedidos.views import payment_confirmation
+
 
 import stripe
 import json
@@ -49,3 +51,12 @@ def stripe_webhook(request):
         print('Unhandled event type {}'.format(event.type))
 
         return HttpResponse(status=200)
+    
+def order_placed(request):
+    carrito = Carrito(request)
+
+    for i in carrito:
+        carrito.disminuirStock(i["id_producto"]) #esta funcion es llaamda para que al procesar el pago descuente los productos
+
+    carrito.clear()
+    return render(request, 'pago/pedidorealizado.html')
