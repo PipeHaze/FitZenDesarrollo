@@ -9,6 +9,7 @@ from .models import UserBase
 from django.contrib.auth import login, logout
 from .token import account_activation_token
 from django.contrib.auth.decorators import login_required
+from pedidos.views import pedido_usuarios
 
 
 
@@ -85,5 +86,11 @@ def borrar_usuarios(request): #se llama a esta funcion para que elimine la cuent
     user.save()
     logout(request) #cuando se "borra el usuario, se cierra la sesion, el usuario no puede volver a logearse"
     return redirect('cuentas:confirma_eliminacion')
+
+@login_required
+def ver_pedidos_usuarios(request):
+    pedido = pedido_usuarios(request) #trae los pedidos de los usuarios de esta vista creada
+    return render(request,
+                  'account/user/lista_pedidos_usuario.html', {'pedido': pedido})
 
     

@@ -32,5 +32,5 @@ urlpatterns = [
     path("editar_detalles/", views.editar_detalles, name="editar_detalles"),
     path('perfil/borrar/usuario/',views.borrar_usuarios, name='borrar_usuarios'),
     path('perfil/confirmar_eliminacion/', TemplateView.as_view(template_name="account/user/confirma_eliminacion.html"), name='confirma_eliminacion'),
-
+    path('pedidos_de_tu_usuario/',views.ver_pedidos_usuarios, name="pedidos_del_usuario")
 ]
