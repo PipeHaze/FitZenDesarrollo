@@ -1,0 +1,62 @@
+{% extends "base.html"%}
+{% block title %} Inicia Sesion {% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-12">
+        <div class="login d-flex align-items_center py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-7 mx-auto">
+
+                        <form class="account-form px-4 pt-4" action="." method="post" enctype="multipart/form-data">
+                        {% if user_form.is_valid %}
+                            <div class="alert alert-primary" role="alert">
+                                Cuenta Modificada con exito!
+                            </div>
+                        <p class="small text-center pt-0">
+                            <a href="{% url 'cuentas:dashboard' %}">Volver al perfil</a>
+                        </p>
+                        {%else%}
+                            <h3>Cambia tu perfil</h3>
+                            <p>Edita tu perfil con el siguiente formulario:</p>
+                        {% endif %}
+
+                        {% if form.errors %}
+                            <div class="alert alert-primary" role="alert">
+                            Error: Intenta otra vez!
+                            </div>
+                        {% endif %}
+
+                        {% csrf_token %}
+                            <label class="small font-weight-bold">{{ user_form.email.label }}</label>
+                                {{ user_form.email }}
+                            <label class="small font-weight-bold">{{ user_form.first_name.label }}</label>
+                                {{ user_form.first_name }}
+
+                            
+                            <button class="btn btn-primary btn-block py-2 mb-4 mt-5 fw-bold w-100" type="submit"
+                                value="Guardar cambios">Guardar cambios</button>
+                            <hr class="mb-3">
+                        </form>
+                        <form class="account-form px-4" action="{% url "cuentas:borrar_usuarios" %}" method="post">
+                            {% csrf_token %}
+                            <p class=" h3 pt-4 font-weight-bold">Borrar Cuenta</p>
+                            <p>Estas seguro de que quieres eliminar tu cuenta?</p>
+                            <button type="submit" role="button"
+                                class="btn btn-danger btn-block py-2 mb-4 mt-5 fw-bold w-100">Eliminar</button>
+                        </form>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

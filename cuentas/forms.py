@@ -98,4 +98,22 @@ class PwdResetConfirmForm(SetPasswordForm): #formulario para cambio de contrase�
         label='Repite contraseña', widget=forms.PasswordInput(
         attrs={'class': 'form-control mb-3', 'placeholder': 'Nueva contraseña', 'id': 'form-new-pass2'}))
     
+class UserEditForm(forms.ModelForm):
+    email = forms.EmailField(
+        label='Correo registrado(no puede ser cambiado)', max_length=200, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'email', 'id': 'form-email', 'readonly': 'readonly'}))
+
+    first_name = forms.CharField(
+        label='Usuario', min_length=4, max_length=50, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Nombre de usuario', 'id': 'form-lastname'}))
+
+    class Meta:
+        model = UserBase
+        fields = ('email','first_name', )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['email'].required = True
+    
 

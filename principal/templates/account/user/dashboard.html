@@ -2,4 +2,21 @@
 {% block title %} Tu Dashboard {% endblock %}
 
 {% block content %}
+
+<main class="pt-5">
+    <div class="container" style="max-width: 900px;">
+        <div class="col-12">
+            <h1 class="h2">Tu Cuenta</h1>
+        </div>
+        <div class="col-12 d-flex justify-content-between">
+            <div>Maneja tus <b>pedidos</b> y tu cuenta personal</div>
+            <div><a href="#">Productos pendientes</a></div>
+            <div><a href="{% url "cuentas:acciones_usuario" %}">Ver Informacion</a></div>
+            
+        </div>
+        <hr />
+    </div>
+    
+</main>
+
 {% endblock %}

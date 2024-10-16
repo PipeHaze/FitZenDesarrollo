@@ -20,11 +20,17 @@ urlpatterns = [
                                                                  email_template_name='account/user/password_reset_email.html',
                                                                  form_class=PwdResetForm), name='recuperaclave'),
     path('password_reset_confirm/<uidb64>/<token>',auth_views.PasswordResetConfirmView.as_view(template_name='account/user/password_reset_confirm.html',
-                                                                                               success_url='/cuentas/password_reset_complete/',
+                                                                                               success_url='/cuentas/password_reset_complete/', #no se como pero poniendole /cuentas funciono.
                                                                                                form_class=PwdResetConfirmForm), name="password_reset_confirm"),
     path('password_reset/password_reset_email_confirm/',
          TemplateView.as_view(template_name="account/user/reset_status.html"),name='password_reset_done'),
     path('password_reset_complete/',
          TemplateView.as_view(template_name="account/user/reset_status.html"), name='password_reset_complete'),
+    #dashboard de usuarios     
+    path("dashboard/", views.dashboard, name="dashboard"),
+    path("acciones_usuario/", views.acciones_usuario, name="acciones_usuario"),
+    path("editar_detalles/", views.editar_detalles, name="editar_detalles"),
+    path('perfil/borrar/usuario/',views.borrar_usuarios, name='borrar_usuarios'),
+    path('perfil/confirmar_eliminacion/', TemplateView.as_view(template_name="account/user/confirma_eliminacion.html"), name='confirma_eliminacion'),
 
 ]
