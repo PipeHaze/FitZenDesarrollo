@@ -8,6 +8,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import UserBase
 from django.contrib.auth import login, logout
 from .token import account_activation_token
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -52,3 +54,8 @@ def account_activate(request, uidb64, token):
         return redirect('principal:paginaprincipal')
     else:
         return render(request, 'account/registration/activation_invalid.html')
+    
+@login_required
+def dashboard(request): #trae los pedidos de los usuarios de esta vista creada
+    return render(request,
+                  'account/user/dashboard.html')

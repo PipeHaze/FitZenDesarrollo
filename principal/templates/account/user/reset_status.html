@@ -1,0 +1,23 @@
+{% extends "base.html"%}
+{% block title %} Inicia Sesion {% endblock %}
+{% load static %}
+
+{% block content %}
+<CEnter>
+    <div class="container">
+    <div class="p-4">
+        {% if 'email' in request.get_full_path %}
+            <h3 class="mb-4">Correo enviado con exito</h3>
+            <p>Verifica tu e-mail para seguir con las instrucciones</p>
+        {% endif %}
+        {% if 'complete' in request.get_full_path %}
+            <h3 class="mb-4">Contraseña cambiada con exito</h3>
+            <a href="{% url 'cuentas:login' %}">Inicia Sesion</a>
+        {% endif %}
+    </div>
+    </div>
+</CEnter>
+
+    
+
+{% endblock %}

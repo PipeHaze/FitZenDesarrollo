@@ -75,5 +75,27 @@ class RegistrationForm(forms.ModelForm):
             {'class': 'form-control mb-3', 'placeholder': 'Contraseña'})
         self.fields['password2'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Confirma contraseña'})
+        
+class PwdResetForm(PasswordResetForm):
+
+    email = forms.EmailField(max_length=254,widget=forms.TextInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email'}))
+    
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        u = UserBase.objects.filter(email=email)
+        if not u:
+            raise forms.ValidationError(
+                'Hubo un error al encontrar tu correo electronico')
+        return email
+    
+class PwdResetConfirmForm(SetPasswordForm): #formulario para cambio de contraseña
+    new_password1 = forms.CharField(
+        label='Nueva contraseña', widget=forms.PasswordInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Nueva contraseña', 'id': 'form-newpass'}))
+
+    new_password2 = forms.CharField(
+        label='Repite contraseña', widget=forms.PasswordInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Nueva contraseña', 'id': 'form-new-pass2'}))
     
 
