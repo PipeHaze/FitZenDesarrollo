@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm,UserEditForm
+from .forms import RegistrationForm,UserEditForm, UserAddressForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import UserBase
+from .models import UserBase, Direccion
 from django.contrib.auth import login, logout
 from .token import account_activation_token
 from django.contrib.auth.decorators import login_required
 from pedidos.views import pedido_usuarios
+from django.urls import reverse
+
 
 
 
@@ -93,4 +95,46 @@ def ver_pedidos_usuarios(request):
     return render(request,
                   'account/user/lista_pedidos_usuario.html', {'pedido': pedido})
 
-    
+@login_required
+def ver_direccion(request):
+    direcciones = Direccion.objects.filter(usuario=request.user) #filtrar las direcciones por el usuario logeado
+    return render(request, "account/user/direcciones.html", {"direcciones": direcciones})
+
+@login_required
+def agregar_direccion(request):
+    if request.method == "POST":
+        direccion_form = UserAddressForm(data=request.POST)
+        if direccion_form.is_valid():
+            direccion_form = direccion_form.save(commit=False)
+            direccion_form.usuario = request.user
+            direccion_form.save()
+            return HttpResponseRedirect(reverse("cuentas:direcciones"))
+    else:
+        direccion_form = UserAddressForm()
+    return render(request, "account/user/editar_direccion.html", {"form": direccion_form})
+
+@login_required
+def editar_direccion(request, id):
+    if request.method == "POST":
+        direccion = Direccion.objects.get(pk=id, usuario = request.user)
+        direccion_form = UserAddressForm(instance=direccion, data=request.POST)
+        if direccion_form.is_valid():
+            direccion_form.save()
+            return HttpResponseRedirect(reverse("cuentas:direcciones"))
+        
+    else:
+        direccion = Direccion.objects.get(pk=id, usuario = request.user)
+        direccion_form = UserAddressForm(instance=direccion)
+    return render(request, "account/user/editar_direccion.html", {"form": direccion_form})
+
+@login_required
+def eliminar_direccion(request, id):
+    direccion = Direccion.objects.get(pk=id, usuario=request.user).delete() #filtra la direccion del usuario y delete la elimina.
+    return redirect("cuentas:direcciones")
+
+@login_required
+def set_default(request, id):
+    Direccion.objects.filter(usuario=request.user, default = True).update(default = False)
+    Direccion.objects.filter(pk=id, usuario=request.user).update(default=True)
+    return redirect("cuentas:direcciones")
+

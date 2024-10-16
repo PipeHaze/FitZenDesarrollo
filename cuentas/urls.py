@@ -32,5 +32,15 @@ urlpatterns = [
     path("editar_detalles/", views.editar_detalles, name="editar_detalles"),
     path('perfil/borrar/usuario/',views.borrar_usuarios, name='borrar_usuarios'),
     path('perfil/confirmar_eliminacion/', TemplateView.as_view(template_name="account/user/confirma_eliminacion.html"), name='confirma_eliminacion'),
-    path('pedidos_de_tu_usuario/',views.ver_pedidos_usuarios, name="pedidos_del_usuario")
+    path('pedidos_de_tu_usuario/',views.ver_pedidos_usuarios, name="pedidos_del_usuario"),
+    #url direcciones
+    path("direcciones/", views.ver_direccion, name="direcciones"),
+    path("agregar_direccion/", views.agregar_direccion, name="agregar_direccion"),
+    path("direccion/editar/<slug:id>/", views.editar_direccion, name="editar_direccion"),
+    path("direccion/eliminar/<slug:id>/", views.eliminar_direccion, name="eliminar_direccion"),
+    path("direccion/set_default/<slug:id>/", views.set_default, name="set_default"),
+
+
+
+
 ]

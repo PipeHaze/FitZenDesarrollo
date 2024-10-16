@@ -1,0 +1,44 @@
+{% extends "../sub_base.html" %}
+{% load static %}
+{% block title %} Editar direcciones {% endblock %}
+
+{% block sub_content %}
+<div class="col-6 mx-auto">
+<h1 class="h3">Crear / Editar direccion</h1>
+<div>Agrega una nueva <b>Direccion</b> y preferencias para tu delivery</div>
+<hr />
+
+    <form name="direccion_form" class="account-form" method="post" enctype="multipart/form-data">
+        {% if form.errors %}
+        <div class="alert alert-primary" role="alert">
+            Error: Intenta otra vez!
+        </div>
+        {% endif %}
+        {% csrf_token %}
+        <label class="small fw-bold">{{ form.nombre_completo.label }}</label>
+        {{ form.nombre_completo }}
+        <label class="small fw-bold">{{ form.telefono.label }}</label>
+        {{ form.telefono }}
+        <label class="small fw-bold">{{ form.direccion_1.label }}</label>
+        {{ form.direccion_1 }}
+        <label class="small fw-bold">{{ form.direccion_2.label }}</label>
+        {{ form.direccion_2 }}
+        <label class="small fw-bold">{{ form.comuna.label }}</label>
+        {{ form.comuna }}
+        <label class="small fw-bold">{{ form.codigopostal.label }}</label>
+        {{ form.codigopostal }}
+        <button class="btn btn-primary btn-block py-2 mb-4 mt-4 fw-bold w-100"
+        type="button" value="Submit" onclick="submitForm()">
+        Agregar direccion
+        </button>
+    </form>
+</div>
+<script>
+    function submitForm(){
+        var form = document.getElementsByName('direccion_form')[0];
+        form.submit(); // mandar el formulario
+        form.reset(); // limpiar el formulario
+        return false; // recarga la pagina
+    }
+</script>
+{% endblock %}

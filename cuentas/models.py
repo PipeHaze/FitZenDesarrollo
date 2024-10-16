@@ -96,5 +96,30 @@ class UserBase(AbstractBaseUser,PermissionsMixin):
         )
 
     def __str__(self):
-        return self.user_name    
+        return self.user_name
+    
+class Direccion(models.Model):
+    """
+    Direcciones
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable= False)
+    usuario = models.ForeignKey(UserBase, verbose_name=("usuario"), on_delete=models.CASCADE)
+    nombre_completo = models.CharField(_("Nombre Completo"), max_length=150)
+    pais = CountryField()
+    telefono = models.CharField(max_length=15, blank= True)
+    codigopostal = models.CharField(max_length=12,blank= True)
+    direccion_1 = models.CharField(max_length=150, blank= True)        
+    direccion_2 = models.CharField(max_length=150, blank= True)
+    comuna = models.CharField(max_length=150, blank= True)
+    instrucciones_delivery = models.CharField(_("Instrucciones delivery"), max_length=255)
+    creado_en = models.DateTimeField(("Creado en"), auto_now_add=True)
+    modificado_en = models.DateTimeField(_("Modificado en"), auto_now_add=True)
+    default = models.BooleanField(_("Default"), default=False)
+
+    class Meta:
+        verbose_name = "Direccion"
+        verbose_name_plural = "Direcciones"
+
+    def __str__(self):
+        return "Direccion"
     
