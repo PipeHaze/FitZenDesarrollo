@@ -45,6 +45,15 @@
                 
         </div>
     </div>
+    {% if request.user == producto.creado_por %}
+        <div class="container rounded bg-light mt-2 py-3">
+                    
+
+
+        </div>
+        {% else %}
+            <a href="{% url 'conversacion:nuevaconversacion' producto.slug %}" class="inline-block btn btn-warning mb-2 ms-2"> Contactar vendedor </a>
+    {% endif %}
 
     <script>
 

@@ -1,0 +1,37 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %} New conversation {% endblock %}
+
+{% block content %}
+
+<div class="container d-flex flex-column align-items-center my-5 " >
+    
+    <div class="my-2 p-3 pb-5" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; border-radius: 10px;">
+        <div class="border-bottom"><span class="mb-5" >Contacto con <b>{{producto.creado_por}}</b></span></div>
+        
+        <form method="post" action=".">
+            {% csrf_token %}
+
+                <div class="form-group green-border mt-3">
+                    {{form.as_p}}
+                </div>
+                
+        
+            {% if form.errors or form.non_field_errors %}
+                    <div class="mb-3 p-2 bg-red rounded" style="background-color: rgb(172, 211, 244);">
+                        {% for field in form %}
+                        {{ field.errors }}
+                        {% endfor %}
+        
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-primary btn-sm col-12 ">Enviar mensaje</button>
+                    
+                    
+        </form> 
+    </div>
+    
+</div>
+
+{% endblock %}
