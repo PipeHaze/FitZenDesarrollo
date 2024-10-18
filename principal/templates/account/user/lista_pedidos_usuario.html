@@ -1,0 +1,65 @@
+{% extends "../../base.html"%}
+{% block title %} Tus pedidos anteriores {% endblock %}
+
+{% block content %}
+
+{% for pedido in pedido %}
+        <div class="row g-3">
+            
+          <div class="col-12 bg-light p-3 d-flex justify-content-between">
+            <div class="d-flex d-flex-inline">
+                
+              <div class="pe-3">{{ pedido.creado }}</div>
+              <div class="dropdown">
+              <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link" id="dropdownLink" data-bs-toggle="dropdown" aria-expanded="false">
+              Despachado A:
+              
+              </a>
+    
+              <ul class="dropdown-menu" aria-labelledby="dropdownLink">
+                <li class="item small">{{pedido.user}}</li>
+                <li class="item small">{{pedido.direccion1}}</li>
+                <li class="item small">{{pedido.direccion2}}</li>
+                <li class="item small">{{pedido.codigo_postal}}</li>
+              </ul>
+              </div>
+    
+            </div>
+            <div class="text-end">
+              Total Pagado: <span class="fw-bold">${{ pedido.total_pagado }}</span>
+            </div>
+          </div>
+          <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
+            <div class="d-grid gap-2 ">
+              <button class="btn btn-warning" type="button">Problema con la Orden</button>
+              <button class="btn btn-light" type="button">Dejar un Comentario</button>
+            </div>
+          </div>
+          
+          <div class="col-md-7 col-lg-8 p-0">
+
+            {% for item in pedido.items.all %}
+    
+            <div class="card mb-3 border-0">
+              <div class="row g-0">
+                <div class="col-md-2 d-none d-md-block">
+                  <img class="img-fluid" style="width:90px" src="{{item.producto.imagen.url}}" />
+                </div>
+                <div class="col-md-10">
+                  <div class="card-body p-1">
+                    <a class="text-decoration-none" href="{{ item.producto.get_absolute_url }}">
+                      <p class="card-text small">{{item.producto|title}}</p>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            
+            {% endfor %}
+          
+    
+        </div>
+        {% endfor %}
+
+{% endblock %}

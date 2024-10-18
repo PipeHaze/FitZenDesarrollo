@@ -32,3 +32,8 @@ def agregar(request):
 
 def payment_confirmation(data):
     Pedido.objects.filter(pedido_key=data).update(estado_factura=True)
+
+def pedido_usuarios(request):
+    user_id = request.user.id
+    pedido = Pedido.objects.filter(user_id=user_id).filter(estado_factura=True)
+    return pedido

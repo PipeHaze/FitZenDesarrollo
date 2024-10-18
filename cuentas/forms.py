@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import(AuthenticationForm, PasswordResetForm, SetPasswordForm)
 from django.forms.widgets import FileInput
-from .models import UserBase
+from .models import UserBase, Direccion
 from django.contrib.auth.forms import UserChangeForm
 
 class UserLoginForm(AuthenticationForm):
@@ -75,5 +75,71 @@ class RegistrationForm(forms.ModelForm):
             {'class': 'form-control mb-3', 'placeholder': 'Contraseña'})
         self.fields['password2'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Confirma contraseña'})
+        
+class PwdResetForm(PasswordResetForm):
+
+    email = forms.EmailField(max_length=254,widget=forms.TextInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email'}))
+    
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        u = UserBase.objects.filter(email=email)
+        if not u:
+            raise forms.ValidationError(
+                'Hubo un error al encontrar tu correo electronico')
+        return email
+    
+class PwdResetConfirmForm(SetPasswordForm): #formulario para cambio de contraseña
+    new_password1 = forms.CharField(
+        label='Nueva contraseña', widget=forms.PasswordInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Nueva contraseña', 'id': 'form-newpass'}))
+
+    new_password2 = forms.CharField(
+        label='Repite contraseña', widget=forms.PasswordInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Nueva contraseña', 'id': 'form-new-pass2'}))
+    
+class UserEditForm(forms.ModelForm):
+    email = forms.EmailField(
+        label='Correo registrado(no puede ser cambiado)', max_length=200, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'email', 'id': 'form-email', 'readonly': 'readonly'}))
+
+    first_name = forms.CharField(
+        label='Usuario', min_length=4, max_length=50, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Nombre de usuario', 'id': 'form-lastname'}))
+
+    class Meta:
+        model = UserBase
+        fields = ('email','first_name', )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['email'].required = True
+
+class UserAddressForm(forms.ModelForm):
+    class Meta:
+        model = Direccion
+        fields = ["nombre_completo", "telefono", "direccion_1", "direccion_2", "comuna", "codigopostal"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["nombre_completo"].widget.attrs.update(
+            {"class": "form-control mb-2 account-form", "placeholder": "Nombre Completo"}
+        )
+        self.fields["telefono"].widget.attrs.update(
+            {"class": "form-control mb-2 account-form", "placeholder": "Ingresa Telefono"}
+        )
+        self.fields["direccion_1"].widget.attrs.update(
+            {"class": "form-control mb-2 account-form", "placeholder": "Ingresa Direccion"}
+        )
+        self.fields["direccion_2"].widget.attrs.update(
+            {"class": "form-control mb-2 account-form", "placeholder": "Ingresa 2 Direccion"}
+        )
+        self.fields["comuna"].widget.attrs.update(
+            {"class": "form-control mb-2 account-form", "placeholder": "Ingresa Comuna"}
+        )
+        self.fields["codigopostal"].widget.attrs.update(
+            {"class": "form-control mb-2 account-form", "placeholder": "Codigo Postal"}
+        )
     
 

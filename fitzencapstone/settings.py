@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'carritocompras',
     'pago',
     'pedidos',
+    'conversacion',
 ]
 
 MIDDLEWARE = [
@@ -83,12 +84,31 @@ WSGI_APPLICATION = 'fitzencapstone.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+"""
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': '127.0.0.1:1521/xe',
+        'USER': 'fitzen',
+        'PASSWORD': '123456',
+        'TEST': {
+            'USER': 'default_test',
+            'TBLSPACE': 'default_test_tbls',
+            'TBLSPACE_TMP': 'default_test_tbls_tmp',
+        },
+    }
+}
+
+
 
 
 # Password validation
