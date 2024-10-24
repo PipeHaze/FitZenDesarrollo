@@ -5,12 +5,14 @@ from .utils import decrypt_slug
 from django.contrib.auth.decorators import login_required, permission_required
 from .forms import ProductoForm
 from django.contrib import messages
+from django.db.models import Q
+
 
 
 # Create your views here.
 
 def paginaprincipal(request):
-    producto = Producto.objects.all()  # Obtener todos los productos, al principio voy a traer todos los objetos, despues va a hacer con object or 404.
+    producto = Producto.producto.filter(aprobado = True)  # Obtener todos los productos, al principio voy a traer todos los objetos, despues va a hacer con object or 404.
     return render(request,"app/paginaprincipal.html", {'producto': producto})
 
 def producto_info(request, encrypted_slug):
@@ -35,10 +37,40 @@ def agregarproducto(request):
             categoria_id = request.POST.get('categoria')
             # Asignar la categoría al producto
             producto.categoria_id = categoria_id
-            producto.aprobado = True # QUE NO SE ME OLVIDE CAMBIARLO A FALSE PARA APROBAR EL PRODUCTO
+            producto.aprobado = False # QUE NO SE ME OLVIDE CAMBIARLO A FALSE PARA APROBAR EL PRODUCTO
             producto.save()
             messages.success(request, 'el producto se ha agregado, pero tiene que ser aprobado por el administrador')
             return redirect(to='principal:paginaprincipal')
     else:
         form = ProductoForm()
     return render(request, 'app/agregarproducto.html', {'form': form})
+
+@permission_required('app.delete_producto')
+def productos_pendientes(request):
+    productos = Producto.objects.filter(aprobado = False)
+    return render(request,'app/productos_pendientes.html', {'productos': productos})
+
+@permission_required('app.add_producto')
+def aprobar_producto(request, pk):
+    producto = get_object_or_404(Producto, pk = pk)
+    producto.aprobado = True
+    producto.save()
+    return redirect('principal:productos_pendientes')
+
+@permission_required('app.delete_producto')
+def rechazar_producto(request, pk):
+    producto = get_object_or_404(Producto, pk = pk)
+    producto.delete()
+    return redirect('principal:productos_pendientes')
+
+def buscar_pendientes(request):
+    queryset = request.GET.get("buscar")#este es el nombre que sale el el buscador de la pagina productos pendientes.
+    productos = Producto.objects.filter(aprobado=False)
+    
+    if queryset:
+        productos = Producto.objects.filter(
+            Q(titulo__icontains = queryset) |
+            Q(descripcion__icontains = queryset)
+        ).distinct()
+    
+    return render(request, 'app/productos_pendientes.html', {'productos': productos})

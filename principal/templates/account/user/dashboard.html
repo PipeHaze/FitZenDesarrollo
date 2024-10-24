@@ -10,8 +10,10 @@
         </div>
         <div class="col-12 d-flex justify-content-between">
             <div>Maneja tus <b>pedidos</b> y tu cuenta personal</div>
-            <div><a href="#">Productos pendientes</a></div>
-            <div><a href="{% url "cuentas:acciones_usuario" %}">Ver Informacion</a></div>
+            {% if perms.app.delete_producto %}
+            <div><a href="{% url 'principal:productos_pendientes' %}">Productos pendientes</a></div>
+            {% endif %}
+            <div><a href="{% url 'cuentas:acciones_usuario' %}">Ver Informacion</a></div>
             
         </div>
         <hr />

@@ -1,0 +1,72 @@
+{% extends "../base.html"%}
+{% block title %} Lista de Productos Pendientes {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main class="pt-5">
+    
+    <div class="container">
+
+        <div class="table">
+            <div class="table_header">
+                <p> Productos Pendientes</p>
+
+                <div class="input_Search" id="custom-search-input">
+                    <form action="{% url 'principal:buscar_pendientes' %}" method="get">
+                        {% csrf_token %}
+                        {{ crispy }}
+                        <input type="search" placeholder="Buscar Pendientes" name="buscar" value="{{ request.GET.buscar }}">
+
+                        <button type="submit"><i class="bi bi-search" style="color: blue;"></i></button>
+                    </form>
+                                        
+                </div>
+
+            </div>
+            <div class="table_section">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Descripcion</th>
+                            <th>Aprobar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+        
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.titulo }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td>{{ producto.descripcion }}</td>
+                            {% if perms.app.add_producto %}
+                            <td> 
+                                <form method="post" action="{% url 'principal:aprobar_producto' producto.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit"><i class="fa-sharp fa-solid fa-circle-check"></i></button>
+                                </form> 
+                            </td>
+                            {% endif %}
+
+                            {% if perms.app.add_producto %}
+                            <td>
+                                <form method="post" action="{% url 'principal:rechazar_producto' producto.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit"><i class="fa-solid fa-trash"></i></button>
+                                </form>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                            <p>No hay productos/publicaciones para aceptar o eliminar</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+
+{% endblock %}
