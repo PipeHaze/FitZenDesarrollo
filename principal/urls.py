@@ -11,6 +11,7 @@ urlpatterns = [
         path('',views.paginaprincipal,name="paginaprincipal"),
         path('item/<str:encrypted_slug>/', views.producto_info, name='informacion_productos'),
         path('search/<slug:categoria_slug>/', views.categoria_productos, name='categoria_productos'),
+        path('agregarproducto/',views.agregarproducto,name="agregarproducto"),
         
 
 
