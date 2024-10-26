@@ -3,50 +3,58 @@
 {% load static %}
 
 {% block content %}
+{% load crispy_forms_tags %}
 
-<form action="." method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+<div class="container d-flex justify-content-center mt-5">
+    <div class="col-md-6">
+        <form action="." method="post" enctype="multipart/form-data" class="p-4 border rounded shadow">
+            {% csrf_token %}
+            
+            <h3 class="text-center mb-4">Editar Perfil</h3>
 
-    <div class="mb-3">
-        <label class="d-block mb-2" for="">descripcion</label>
-        {{form_user.descripcion}}
-    </div>
-
-    <div class="mb-3">
-        <label class="d-block mb-2" for="">Imagen</label>
-        {{form_user.imagen_perfil}}
-    </div>
-    
-    <div class="mb-3">
-        <label class="d-block mb-2" for="">Direccion</label>
-        {{form_user.direccion_user}}
-    </div>
-    <div class="mb-3">
-        <label class="d-block mb-2" for="">Telefono</label>
-        {{form_user.telefono}}
-    </div>
-    <div class="mb-3">
-        <label class="d-block mb-2" for="">trabajo</label>
-        {{form_user.tipo_trabajo}}
-    </div>
-    <div class="mb-3">
-        <label class="d-block mb-2" for="">Cargo</label>
-        {{form_user.cargo_trabajo}}
-    </div>
-
-
-    {% if form_user.errors or form_user.non_field_errors %}
-            <div class="mb-3 p-2 rounded" style="background-color: rgb(172, 211, 244);">
-                {% for field in form_user %}
-                {{ field.errors }}
-                {% endfor %}
-
-                {{ form_user.non_field_errors }}
+            <div class="mb-3">
+                <label class="d-block mb-2" for="">Descripción</label>
+                {{ form_user.descripcion }}
             </div>
+
+            <div class="mb-3">
+                <label class="d-block mb-2" for="">Imagen</label>
+                {{ form_user.imagen_perfil }}
+            </div>
+            
+            <div class="mb-3">
+                <label class="d-block mb-2" for="">Dirección</label>
+                {{ form_user.direccion_user }}
+            </div>
+            
+            <div class="mb-3">
+                <label class="d-block mb-2" for="">Teléfono</label>
+                {{ form_user.telefono }}
+            </div>
+            
+            <div class="mb-3">
+                <label class="d-block mb-2" for="">Trabajo</label>
+                {{ form_user.tipo_trabajo }}
+            </div>
+            
+            <div class="mb-3">
+                <label class="d-block mb-2" for="">Cargo</label>
+                {{ form_user.cargo_trabajo }}
+            </div>
+
+            {% if form_user.errors or form_user.non_field_errors %}
+                <div class="mb-3 p-2 rounded" style="background-color: rgb(172, 211, 244);">
+                    {% for field in form_user %}
+                        {{ field.errors }}
+                    {% endfor %}
+                    {{ form_user.non_field_errors }}
+                </div>
             {% endif %}
 
-            <button onclick="return confirmEdit();" type="submit" class="btn btn-primary">Editar</button>
-</form>
+            <button onclick="return confirmEdit();" type="submit" class="btn btn-primary w-100">Editar</button>
+        </form>
+    </div>
+</div>
 
 <script>
 

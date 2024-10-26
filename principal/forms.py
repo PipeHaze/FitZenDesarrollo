@@ -33,3 +33,14 @@ class ProductoForm(forms.ModelForm):
         if len(titulo) < 5 or len(titulo) > 50:
             raise forms.ValidationError("El título debe tener entre 5 y 50 caracteres.")
         return titulo
+    
+    def clean_slug(self):
+        slug = self.cleaned_data['slug']
+        if Producto.objects.filter(slug=slug).exists():
+            raise forms.ValidationError("El slug debe ser único.")
+        return slug
+    
+    def __init__(self, *args, **kwargs):
+        super(ProductoForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
