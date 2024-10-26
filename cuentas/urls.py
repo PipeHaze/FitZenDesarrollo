@@ -39,6 +39,7 @@ urlpatterns = [
     path("direccion/editar/<slug:id>/", views.editar_direccion, name="editar_direccion"),
     path("direccion/eliminar/<slug:id>/", views.eliminar_direccion, name="eliminar_direccion"),
     path("direccion/set_default/<slug:id>/", views.set_default, name="set_default"),
+    path('editar_perfil/<int:user_id>/', views.editar_perfil, name='editar_perfil'),
 
 
 

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import(AuthenticationForm, PasswordResetForm, SetPasswordForm)
 from django.forms.widgets import FileInput
-from .models import UserBase, Direccion
+from .models import UserBase, Direccion, Perfil
 from django.contrib.auth.forms import UserChangeForm
 
 class UserLoginForm(AuthenticationForm):
@@ -141,5 +141,30 @@ class UserAddressForm(forms.ModelForm):
         self.fields["codigopostal"].widget.attrs.update(
             {"class": "form-control mb-2 account-form", "placeholder": "Codigo Postal"}
         )
+
+class PerfilEditForm(forms.ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ['descripcion', 'imagen_perfil', 'direccion_user','telefono','tipo_trabajo','cargo_trabajo',]
+        widgets = {
+            'descripcion': forms.TextInput(attrs={
+                'class': 'form-comtrol',
+            }),
+            'imagen_perfil':forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
+            'direccion_user': forms.TextInput(attrs={
+                'class': 'form-comtrol',
+            }),
+             'telefono': forms.TextInput(attrs={
+                'class': 'form-comtrol',
+            }),
+              'tipo_trabajo': forms.TextInput(attrs={
+                'class': 'form-comtrol',
+            }),
+              'cargo_trabajo': forms.TextInput(attrs={
+                'class': 'form-comtrol',
+            }),            
+        }
     
 

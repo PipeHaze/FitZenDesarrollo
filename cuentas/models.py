@@ -5,6 +5,8 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -122,4 +124,23 @@ class Direccion(models.Model):
 
     def __str__(self):
         return "Direccion"
+    
+
+class Perfil(models.Model):
+    user = models.OneToOneField(UserBase, on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=250)
+    imagen_perfil = models.ImageField(default='media/default.jpg', upload_to='media', null=True)
+    direccion_user = models. TextField(max_length="50", null=True)
+    telefono = models.TextField(max_length=50,null=True)
+    tipo_trabajo = models.TextField(max_length=70, null=True)
+    cargo_trabajo = models.TextField(max_length=60)
+
+    def __str__(self):
+        return f"{self.user.email} Perfil"
+
+@receiver(post_save, sender=UserBase)
+def crear_perfil_al_crear_usuario(sender, instance, created, **kwargs):
+    if created:
+        Perfil.objects.create(user=instance, descripcion='Descripción predeterminada')
+
     

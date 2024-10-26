@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm,UserEditForm, UserAddressForm
+from .forms import RegistrationForm,UserEditForm, UserAddressForm, PerfilEditForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -137,4 +137,23 @@ def set_default(request, id):
     Direccion.objects.filter(usuario=request.user, default = True).update(default = False)
     Direccion.objects.filter(pk=id, usuario=request.user).update(default=True)
     return redirect("cuentas:direcciones")
+
+@login_required
+def editar_perfil(request, user_id):
+    user = UserBase.objects.get(pk=user_id)
+    
+    # Verifica si el usuario autenticado es el propietario del perfil
+    if request.user != user:
+        # Redirige a una página de error o muestra un mensaje de error
+        return redirect('cuentas:dashboard')
+
+    if request.method == 'POST':
+        form_user = PerfilEditForm(request.POST, request.FILES, instance=user.perfil)
+        if form_user.is_valid():
+            form_user.save()
+            return redirect('cuentas:dashboard')
+    else:
+        form_user = PerfilEditForm(instance=user.perfil)
+    
+    return render(request, 'account/user/editar_perfil.html', {'form_user': form_user, 'user_id': user_id})
 

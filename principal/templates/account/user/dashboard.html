@@ -18,6 +18,57 @@
         </div>
         <hr />
     </div>
+
+    <section class="seccion-perfil-usuario">
+        <div class="perfil-usuario-header">
+            <div class="perfil-usuario-portada">
+                <div class="perfil-usuario-avatar">
+                    <img src="{{ user.perfil.imagen_perfil.url }}" alt="img-avatar">
+                    <button type="button" class="boton-avatar">
+                        <i class="far fa-image"></i>
+                    </button>
+                </div>
+                <button type="button" class="boton-portada">
+                    <a href="{% url 'cuentas:editar_perfil' user_id=user.id %}" class="far fa-image"></a> Editar Perfil
+                </button>
+            </div>
+        </div>
+        <div class="perfil-usuario-body">
+            <div class="perfil-usuario-bio">
+                <h3 class="titulo">{{ user.email }}</h3>
+                <p class="texto">{{ user.perfil.descripcion }}</p>
+            </div>
+            <div class="perfil-usuario-footer">
+                <ul class="lista-datos">
+                    <li><i class="icono fas fa-map-signs"></i>{{ user.perfil.direccion_user }}</li>
+                    <li><i class="icono fas fa-phone-alt"></i>{{ user.perfil.telefono }}</li>
+                    
+                </ul>
+                <ul class="lista-datos">
+                  <li><i class="icono fas fa-briefcase"></i>{{ user.perfil.tipo_trabajo }}</li>
+                  <li><i class="icono fas fa-building"></i>{{ user.perfil.cargo_trabajo }}</li>
+                </ul>
+            </div>
+            <div class="redes-sociales">
+                <a href="" class="boton-redes facebook fab fa-facebook-f"><i class="icon-facebook"></i></a>
+                <a href="" class="boton-redes twitter fab fa-twitter"><i class="icon-twitter"></i></a>
+                <a href="" class="boton-redes instagram fab fa-instagram"><i class="icon-instagram"></i></a>
+            </div>
+            <br>
+            <div class="col">
+              <a href="" class="text-reset text-decoration-none" role="button" style="max-width: 540px;">
+              <div class="card mb-3">
+      
+      
+                
+      
+      
+                
+              </div>
+              </a>
+            </div>
+        </div>
+    </section>
     
 </main>
 
