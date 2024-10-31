@@ -8,7 +8,7 @@
 
 <form action="{% url 'cuentas:login' %}" method="post">
 
-    <h3>Inicia Sesion</h3>
+    <h3 id="InicioSesion">Inicia Sesion</h3>
     {% csrf_token %}
 
     {% if form.errors %}
@@ -17,24 +17,24 @@
         </div>
     {% endif %}
 
-    <div class="formulin">
+    <div class="formulin" id="input">
         <label class="form-label">{{ form.username.label }}</label>
         {{ form.username }}
     </div>
 
-    <div class="formulin">
+    <div class="formulin" id="input">
         <label class="form-label">{{ form.password.label }}</label>
         {{ form.password }}
     </div>
 
-    <div class="input-group mb-3">
+    <div class="input-group mb-3" id="button">
         <button class="btn btn-lg btn-primary w-100 fs-6">Entrar</button>
     </div>
 
     <p class="text-center pb-3">
         <a href="{% url 'cuentas:registro' %}" id="registrate">Crea una cuenta</a>
     </p>
-    <div class="forgot">
+    <div class="forgot text-center">
         <small><a href="{% url 'cuentas:recuperaclave' %}">¿Has Olvidado Tu Clave?</a></small>
     </div>
     

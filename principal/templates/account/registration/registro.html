@@ -6,8 +6,11 @@
 
 <style>
     .account-form input {
-        border: 2px solid #ccc;
+        border-radius: 5px;
         height: calc(2em + .75rem + 2px);
+        width: 50%;
+        margin-right: auto;
+        margin-left: auto;
     }
 
     .account-form input:focus {
@@ -44,7 +47,7 @@
     <label label="contra2">{{ form.password2.label }}<span class="text-muted small">
         (Required)</span></label>
     {{ form.password2 }}
-    <button class="btn btn-primary btn-block py-2 mb-4 mt-5 fw500 w-100" type="submit">Registrate</button>
+    <button class="btn btn-primary" type="submit" id="button_2">Registrate</button>
     <p class="text-center">
         <a href="{% url 'cuentas:login' %}">Ya tienes una cuenta?</a>
     </p>
