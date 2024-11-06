@@ -40,6 +40,8 @@ class Producto(models.Model):
     objects = models.Manager()
     producto = ProductManager()
 
+    usuario_favoritos = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="usuario_favoritos",blank=True)
+
     class Meta:
         verbose_name_plural = 'Productos'
         ordering = ('-creado',)

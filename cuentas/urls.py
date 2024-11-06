@@ -40,8 +40,9 @@ urlpatterns = [
     path("direccion/eliminar/<slug:id>/", views.eliminar_direccion, name="eliminar_direccion"),
     path("direccion/set_default/<slug:id>/", views.set_default, name="set_default"),
     path('editar_perfil/<int:user_id>/', views.editar_perfil, name='editar_perfil'),
-
-
+    #favoritos
+    path("favoritos/agregar_a_favoritos/<int:id>", views.agregar_a_favoritos, name="favoritos_usuario"),
+    path("favoritos/", views.favoritos, name="favoritos"),
 
 
 ]

@@ -11,6 +11,9 @@ from .token import account_activation_token
 from django.contrib.auth.decorators import login_required
 from pedidos.views import pedido_usuarios
 from django.urls import reverse
+from django.shortcuts import get_object_or_404
+from principal.models import Producto
+from django.contrib import messages
 
 
 
@@ -157,3 +160,19 @@ def editar_perfil(request, user_id):
     
     return render(request, 'account/user/editar_perfil.html', {'form_user': form_user, 'user_id': user_id})
 
+@login_required
+def agregar_a_favoritos(request, id):
+    producto = get_object_or_404(Producto, id=id)
+    if producto.usuario_favoritos.filter(id=request.user.id).exists():
+        producto.usuario_favoritos.remove(request.user)
+        messages.success(request, producto.titulo + "Se ha eliminado de tus favoritos")
+    else:
+        producto.usuario_favoritos.add(request.user)
+        messages.success(request, "Se ha agregado el" + producto.titulo + "a favoritos")
+    return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
+@login_required
+def favoritos(request):
+    productos = Producto.objects.filter(usuario_favoritos = request.user)
+
+    return render(request, 'account/user/usuario_favoritos.html', {'productos':productos})
