@@ -230,6 +230,11 @@
     margin-top: 50px;
 }
 
+#button1{
+    background-color: green;
+    border-radius: 5px;
+}
+
 /*
 
 .cardtazo {
