@@ -30,6 +30,9 @@ def categoria_productos(request, categoria_slug = None):
 def foro_principal(request):
     return render(request,'foro/foro_principal.html')
 
+def foro_publicacion(request):
+    return render(request,'foro/foro_publicacion.html')    
+
 @login_required
 def agregarproducto(request):
     if request.method == 'POST':
