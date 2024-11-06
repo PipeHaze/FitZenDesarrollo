@@ -16,6 +16,8 @@ urlpatterns = [
         path('aprobar_producto/<int:pk>/',views.aprobar_producto,name="aprobar_producto"),
         path('rechazar_producto/<int:pk>/',views.rechazar_producto,name="rechazar_producto"),
         path('buscar_pendientes/', views.buscar_pendientes, name='buscar_pendientes'),
+        path('foro_principal/', views.foro_principal, name='foro_principal'),
+        path('foro_publicacion/', views.foro_publicacion, name='foro_publicacion')
 
         
 

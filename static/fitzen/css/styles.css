@@ -171,6 +171,8 @@
     background: linear-gradient(45deg, #FF2DFD, #40A7FF);
 }
 
+
+
 /* adactacion a dispositivos */
 @media (max-width: 750px) {
     .seccion-perfil-usuario .lista-datos {
@@ -200,7 +202,33 @@
     }
 }
 
+#input{
+    border-radius: 5px; /* Bordes redondeados */
+    margin-left: auto; /* Centrar el input */
+    margin-right: auto; /* Centrar el input */
+    width: 50%;
+}
 
+#button{
+    margin-top: 50px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 30%;
+}
+
+#button_2{
+    margin-top: 50px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+#InicioSesion{
+    text-align: center;
+    margin-top: 50px;
+}
 
 /*
 
