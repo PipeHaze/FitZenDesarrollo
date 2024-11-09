@@ -8,7 +8,7 @@
     <div class="alert alert-warning" alert-{{ message.tags }}" role="alert">
 {% for message in messages %}
 
-    {{ message|safe }} - <!------<a href="{% url 'cuentas:favoritos_usuario' producto.id %}" class="alert-link">Tus favoritos.</a>-->
+    {{ message|safe }}  <!------ - <a href="{% url 'cuentas:favoritos_usuario' producto.id %}" class="alert-link">Tus favoritos.</a>-->
 
 {% endfor %}
 </div>
@@ -52,8 +52,10 @@
                 <div class="col-6 text-end">
                     <button type="button" value="{{producto.id}}" id="agregar-button" 
                     class="btn btn-secondary btn-sm">Agregar Al Carro</button>
+                    {% if perms.app.delete_producto %}
                     <a href="{% url 'cuentas:favoritos_usuario' producto.id %}" class="btn btn-light fw500" role="button", 
                     aria-disabled="true">Agregar a Favoritos</a>
+                    {% endif %}
                 </div>
                 
         </div>

@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import UserBase, Direccion
 from django.contrib.auth import login, logout
 from .token import account_activation_token
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from pedidos.views import pedido_usuarios
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
@@ -160,7 +160,7 @@ def editar_perfil(request, user_id):
     
     return render(request, 'account/user/editar_perfil.html', {'form_user': form_user, 'user_id': user_id})
 
-@login_required
+@permission_required('app.delete_producto')
 def agregar_a_favoritos(request, id):
     producto = get_object_or_404(Producto, id=id)
     if producto.usuario_favoritos.filter(id=request.user.id).exists():
