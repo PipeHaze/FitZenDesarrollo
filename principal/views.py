@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from .forms import ProductoForm
 from django.contrib import messages
 from django.db.models import Q
+from .models import ForoProducto  # Asegúrate de importar tu modelo
+
 
 
 
@@ -25,13 +27,7 @@ def producto_info(request, encrypted_slug):
 def categoria_productos(request, categoria_slug = None):
     categoria = get_object_or_404(Categoria, slug = categoria_slug)
     productos = Producto.objects.filter(categoria = categoria)
-    return render(request,'app/categorias.html', {'categoria': categoria, 'productos': productos})
-
-def foro_principal(request):
-    return render(request,'foro/foro_principal.html')
-
-def foro_publicacion(request):
-    return render(request,'foro/foro_publicacion.html')    
+    return render(request,'app/categorias.html', {'categoria': categoria, 'productos': productos})    
 
 @login_required
 def agregarproducto(request):
@@ -80,3 +76,27 @@ def buscar_pendientes(request):
         ).distinct()
     
     return render(request, 'app/productos_pendientes.html', {'productos': productos})
+
+def foro_principal(request):
+    # Obtén todos los productos
+    productos = Producto.objects.all()
+    productos_con_comentarios = []
+
+    # Itera sobre cada producto
+    for producto in productos:
+        # Cuenta cuántas publicaciones de ForoProducto están asociadas con este producto específico
+        conteo_comentarios = ForoProducto.objects.filter(producto=producto).count()
+        
+        # Añade el conteo de comentarios como un atributo de la instancia de producto
+        producto.conteo_comentarios = conteo_comentarios
+        
+        # Añade la instancia de producto a la lista
+        productos_con_comentarios.append(producto)
+
+    # Renderiza la plantilla con el conteo de comentarios
+    return render(request, 'foro/foro_principal.html', {"foro_productos": productos_con_comentarios})
+
+
+
+def foro_publicacion(request):
+    return render(request,'foro/foro_publicacion.html')
