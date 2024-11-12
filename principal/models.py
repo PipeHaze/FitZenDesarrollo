@@ -39,6 +39,7 @@ class Producto(models.Model):
     stock = models.IntegerField()
     objects = models.Manager()
     producto = ProductManager()
+    liike = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like', related_name='rescates_liked')
 
     usuario_favoritos = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="usuario_favoritos",blank=True)
 
@@ -69,27 +70,26 @@ class Producto(models.Model):
     def encrypted_slug(self):
         return encrypt_slug(self.slug)
     
-class ForoProducto(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=True, related_name='usuarios')
-    producto = models.ForeignKey(Producto,on_delete=models.CASCADE,related_name='productos')
-    imagen = models.ImageField(upload_to='media/')
-    texto = models.TextField()
-    slug = models.SlugField(max_length=30)
-    subido_en = models.DateField(auto_now=True)
-    liike = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Like', related_name='productos_liked')
+
+
 
 class Like(models.Model):
-    # Claves foráneas a ForoProducto y al Usuario
-    foro_producto = models.ForeignKey(ForoProducto, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='likes', null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-    # Fecha en que se creó el "me gusta"
     creado_en = models.DateTimeField(auto_now_add=True)
 
-    # Asegúrate de que cada usuario solo pueda dar un "me gusta" por publicación
     class Meta:
-        unique_together = ('foro_producto', 'user')
+        unique_together = ('post', 'user')
 
     def __str__(self):
-        return f'{self.user} likes {self.foro_producto}'
+        return f'{self.user} likes {self.post}'
+
+class Comentario(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    campo = models.CharField(max_length=150)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="comentarios")
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.campo
 

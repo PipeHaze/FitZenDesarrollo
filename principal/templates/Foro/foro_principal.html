@@ -8,24 +8,29 @@
 
 {% if foro_productos %}
     <div class="foro-lista">
-        {% for producto in foro_productos %}
+        {% for foro_producto in foro_productos %}
             <div class="producto-card">
                 <div class="producto-header">
-                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-producto">
+                    <img src="{{ foro_producto.imagen.url }}" alt="{{ foro_producto.nombre }}" class="img-producto">
                     <div class="producto-info">
-                        <h2>{{ producto.nombre }}</h2> <!-- Nombre del producto -->
-                        <span class="producto-date">{{ producto.subido }} | {{ producto.creado_por }}</span> <!-- Fecha de subida -->
+                        <h2>{{ foro_producto.nombre }}</h2> <!-- Nombre del producto -->
+                        <span class="producto-date">{{ foro_producto.subido }} | {{ foro_producto.creado_por }}</span> <!-- Fecha de subida -->
                     </div>
                 </div>
                 
                 <div class="producto-body">
-                    <p>{{ producto.descripcion }}</p> <!-- Comentario del producto -->
+                    <p>{{ foro_producto.descripcion }}</p> <!-- Comentario del producto -->
                 </div>
+
+                
                 
                 <div class="producto-footer">
-                    <p><strong>{{ producto.conteo_comentarios }} comentarios</strong></p>
-                    <a href="#" class="btn-ver-detalles">redirigir a foro_publicacion</a>
+                    
+                    <p><strong>{{ foro_producto.conteo_comentarios }} comentarios</strong></p>
+                    <a href="{% url 'principal:foro_publicacion' foro_producto.encrypted_slug %}" class="btn-ver-detalles">redirigir a foro_publicacion</a>
+                    
                 </div>
+                
             </div>
         {% endfor %}
     </div>

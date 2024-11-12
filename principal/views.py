@@ -3,10 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Categoria, Producto
 from .utils import decrypt_slug
 from django.contrib.auth.decorators import login_required, permission_required
-from .forms import ProductoForm
+from .forms import ProductoForm, ComentarioForm
 from django.contrib import messages
 from django.db.models import Q
-from .models import ForoProducto  # Asegúrate de importar tu modelo
+
 
 
 
@@ -84,13 +84,8 @@ def foro_principal(request):
 
     # Itera sobre cada producto
     for producto in productos:
-        # Cuenta cuántas publicaciones de ForoProducto están asociadas con este producto específico
-        conteo_comentarios = ForoProducto.objects.filter(producto=producto).count()
-        
-        # Añade el conteo de comentarios como un atributo de la instancia de producto
-        producto.conteo_comentarios = conteo_comentarios
-        
-        # Añade la instancia de producto a la lista
+        comentarios = producto.comentarios.filter(activo=True)  # Filtra los comentarios de esta publicación
+        producto.conteo_comentarios = comentarios.count()
         productos_con_comentarios.append(producto)
 
     # Renderiza la plantilla con el conteo de comentarios
@@ -98,5 +93,36 @@ def foro_principal(request):
 
 
 
-def foro_publicacion(request):
-    return render(request,'foro/foro_publicacion.html')
+
+
+def foro_publicacion(request, encrypted_slug):
+    # Desencriptar el slug
+    slug = decrypt_slug(encrypted_slug)
+    
+    producto = Producto.objects.all()
+    # Obtener la publicación del foro usando el slug desencriptado
+    foro = get_object_or_404(Producto, slug=slug)
+    
+    # Otros procesos como comentarios y likes
+    comentarios = foro.comentarios.filter(activo=True)
+    usuarios_que_dieron_like = foro.likes.values_list('user_id', flat=True)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            nuevo_form = form.save(commit=False)
+            if request.user.is_authenticated:
+                nuevo_form.usuario = request.user
+                nuevo_form.producto = foro  # Cambié 'foro' por 'producto'
+                nuevo_form.save()
+            return redirect('principal:foro_publicacion', encrypted_slug=foro.encrypted_slug)  # Redirige al detalle del foro con comentarios
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'foro/foro_publicacion.html', {
+        'foro': foro,
+        'comentarios': comentarios,
+        'form': form,
+        'usuarios_que_dieron_like': usuarios_que_dieron_like,
+        'producto': producto
+    })

@@ -4,34 +4,87 @@
 
 {% block content %}
 
-<div style="display: flex; background-color: aqua; margin-top: 100px; margin-left: 10%; margin-right: 10%; border: 2px solid;">
-    
-    <img src="{% static 'fitzen/img/fitzen.png'%}" alt="Imagen no cargada" style="border: 3px solid; border-color:blue; margin: 5px;">
-    <div style="margin-top: 5px; margin-right: 1%; margin-bottom: 5px; padding: 1% ;overflow-wrap: break-word; text-align: justify;">
-        <h2>Titulo de la publicacion</h2>
-        <p style="font-size: smaller;">Autor: Nombre de ejemplo</p>
-        <p>Parrafo para describir la publicacion, tener en cuenta que si se escriben demasiadas palabras, esto puede causar que el div se rompa, aun asi estamos solucionandolo
-            aunque estamos encontrando problemas a la hora de generar mas espacio dentro de el margen
-        </p>
+<section class="contenedor-comentarios">
+    <div class="publicacion">
+        <!-- Publicación principal -->
+        <div class="usuario-publico">
+            <div class="avatar">
+                <!-- Imagen de usuario de la publicación -->
+                <img src="{{ foro.usuario.profile_image.url }}" alt="img"> <!-- Asumiendo que tienes `profile_image` en tu modelo de usuario -->
+            </div>
+            <div class="contenido-publicacion">
+                <h4>{{ foro.usuario.username }}</h4>
+                <ul>
+                    <li id="licito">{{ foro.subido_en }}</li> <!-- Fecha de publicación -->
+                </ul>
+            </div>
+            <div class="menu-comentario">
+                <i class="fas fa-pen"></i>
+                <ul class="menu">
+                    <li><a href="#">Editar</a></li>
+                    <li><a href="#">Eliminar</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <p>{{ foro.texto }}</p> <!-- Texto de la publicación -->
+        
+        <div class="archivo-publicado">
+            <!-- Imagen publicada, si existe -->
+            {% if foro.imagen %}
+                <img src="{{ foro.imagen.url }}" alt="Imagen publicada">
+            {% endif %}
+        </div>
+        
+        <!-- Botón de Like -->
+        <div class="botones-comentario">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="boton-puntuar">
+                    <i class="fas fa-thumbs-up"></i> {{ foro.like.count }} Likes <!-- Conteo de likes -->
+                </button>
+            </form>
+        </div>
+        
+        <!-- Sección de Comentarios -->
+        <div class="comentarios-usuarios">
+            <h3>Comentarios</h3>
+            
+            {% for comentario in comentarios %}
+            <div class="comentario-principal-usuario">
+                <div class="avatar">
+                    <img src="{{ comentario.usuario.profile_image.url }}" alt="img"> <!-- Imagen de usuario del comentario -->
+                </div>
+                <div class="comentario">
+                    <div class="usuario-comentario">
+                        <div class="texto">
+                            <a href="#">{{ comentario.usuario.username }}</a> <!-- Nombre de usuario -->
+                            <p>{{ comentario.campo }}</p> <!-- Texto del comentario -->
+                            
+                            <div class="menu-comentario">
+                                <i class="fas fa-pen"></i>
+                                <ul class="menu">
+                                    <li><a href="#">Editar</a></li>
+                                    <li><a href="#">Eliminar</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Formulario para agregar un nuevo comentario -->
+        <div class="agregar-comentario">
+            <h3>Deja un Comentario</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }} <!-- Formulario de comentario -->
+                <button type="submit" class="boton-responder">Comentar</button>
+            </form>
+        </div>
     </div>
-</div>
-
-
-<form style="padding-top: 20px; padding-left: 10%; padding-right: 10px;">
-    <div class="form-group">
-    <textarea rows="5" cols="201"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary" style="border-radius: 10px; border-color: black;">Enviar comentario</button>
-</form>
-
-<div style="display: flex; background-color: aqua; margin-top: 100px; margin-left: 10%; margin-right: 10%; margin-bottom: 10%;border: 2px solid;">   
-    <img src="{% static 'fitzen/img/fitzen.png'%}" alt="Imagen no cargada" style="border: 3px solid; border-color:blue; margin: 5px;">
-    <div style="margin-top: 5px; margin-right: 1%; margin-bottom: 5px; padding: 1% ;overflow-wrap: break-word; text-align: justify;">
-        <p style="font-size: smaller;">Autor: Nombre de ejemplo</p>
-        <p>Texto del comentario dejado
-        </p>
-    </div>
-    <button style="border-radius: 10px; background-color: blue; color: white; margin-top: 10%; margin-bottom: 3px; height: 50px; width: 100px; border: 3px solid; border-color: black;">Me Gusta</button><br>
-</div>
+</section>
 
 {% endblock %}

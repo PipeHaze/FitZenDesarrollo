@@ -1,5 +1,5 @@
 from django import forms
-from .models import Categoria, Producto
+from .models import Categoria, Producto, Comentario
 
 
 class ProductoForm(forms.ModelForm):
@@ -44,3 +44,13 @@ class ProductoForm(forms.ModelForm):
         super(ProductoForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['campo']
+        
+    def __init__(self, *args, **kwargs):
+        super(ComentarioForm, self).__init__(*args, **kwargs)
+
