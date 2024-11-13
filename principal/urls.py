@@ -18,8 +18,9 @@ urlpatterns = [
         path('buscar_pendientes/', views.buscar_pendientes, name='buscar_pendientes'),
         path('foro_principal/', views.foro_principal, name='foro_principal'),
         # urls.py
-        path('foro_publicacion/<slug:encrypted_slug>/', views.foro_publicacion, name='foro_publicacion')
-        
+        path('foro_publicacion/<slug:encrypted_slug>/', views.foro_publicacion, name='foro_publicacion'),
+        path('foro_publicacion/<int:post_id>/like/', views.like_post, name='like_post'),
+        path('perfil/<str:user_name>/',views.ver_perfil, name='ver_perfil'),
 
 
 ]

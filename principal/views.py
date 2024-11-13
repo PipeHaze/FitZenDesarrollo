@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Categoria, Producto
-from .utils import decrypt_slug
+from .models import Categoria, Producto, Like
+from .utils import decrypt_slug, encrypt_slug
 from django.contrib.auth.decorators import login_required, permission_required
 from .forms import ProductoForm, ComentarioForm
 from django.contrib import messages
 from django.db.models import Q
+from cuentas.models import UserBase
+from django.contrib.auth.models import AnonymousUser
+
 
 
 
@@ -91,38 +94,57 @@ def foro_principal(request):
     # Renderiza la plantilla con el conteo de comentarios
     return render(request, 'foro/foro_principal.html', {"foro_productos": productos_con_comentarios})
 
-
-
-
-
 def foro_publicacion(request, encrypted_slug):
-    # Desencriptar el slug
     slug = decrypt_slug(encrypted_slug)
-    
-    producto = Producto.objects.all()
-    # Obtener la publicación del foro usando el slug desencriptado
     foro = get_object_or_404(Producto, slug=slug)
-    
-    # Otros procesos como comentarios y likes
-    comentarios = foro.comentarios.filter(activo=True)
+    comentarios = foro.comentarios.filter(activo=True, comentario_padre=None)
     usuarios_que_dieron_like = foro.likes.values_list('user_id', flat=True)
+
+    form = ComentarioForm()
 
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
         if form.is_valid():
             nuevo_form = form.save(commit=False)
-            if request.user.is_authenticated:
-                nuevo_form.usuario = request.user
-                nuevo_form.producto = foro  # Cambié 'foro' por 'producto'
-                nuevo_form.save()
-            return redirect('principal:foro_publicacion', encrypted_slug=foro.encrypted_slug)  # Redirige al detalle del foro con comentarios
-    else:
-        form = ComentarioForm()
+            nuevo_form.usuario = request.user
+            nuevo_form.producto = foro
+
+            # Identificar si es respuesta a un comentario
+            comentario_padre_id = request.POST.get("comentario_padre_id")
+            if comentario_padre_id:
+                nuevo_form.comentario_padre_id = comentario_padre_id
+            
+            nuevo_form.save()
+            return redirect('principal:foro_publicacion', encrypted_slug=foro.encrypted_slug)
 
     return render(request, 'foro/foro_publicacion.html', {
         'foro': foro,
         'comentarios': comentarios,
         'form': form,
         'usuarios_que_dieron_like': usuarios_que_dieron_like,
-        'producto': producto
     })
+
+
+def like_post(request, post_id):
+    post = get_object_or_404(Producto, id=post_id)
+    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    
+    if not created:
+        # Si el like ya existe, se elimina
+        like.delete()
+        
+    # Cifrar el slug antes de redirigir
+    encrypted_slug = encrypt_slug(post.slug)
+    return redirect('principal:foro_publicacion', encrypted_slug=encrypted_slug)
+
+def ver_perfil(request, user_name=None):
+    current_user = request.user
+
+    if isinstance(current_user, AnonymousUser) or (user_name and user_name != current_user.user_name):
+        user = get_object_or_404(UserBase, user_name=user_name)
+    else:
+        user = current_user
+
+    
+
+    return render(request, "account/user/dashboard.html", {'user': user})

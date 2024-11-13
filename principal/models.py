@@ -89,7 +89,12 @@ class Comentario(models.Model):
     campo = models.CharField(max_length=150)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="comentarios")
     activo = models.BooleanField(default=True)
+    comentario_padre = models.ForeignKey(
+        'self', null=True, blank=True, on_delete=models.CASCADE, related_name="respuestas"
+    )
 
     def __str__(self):
         return self.campo
+    
+
 

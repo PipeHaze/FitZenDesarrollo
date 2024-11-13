@@ -316,7 +316,7 @@
     background-color: #155bb5;
 }
 
-/*FORO DETALLE*/
+/* FORO DETALLE */
 .contenedor-comentarios {
     max-width: 650px;
     margin: 0 auto;
@@ -395,36 +395,73 @@
     color: #365899;
 }
 
+/* Estructura del comentario principal */
 .comentario-principal-usuario {
     display: flex;
     align-items: flex-start;
     margin-top: 10px;
+    background-color: #f0f2f5;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Imagen del comentario principal */
+.comentario-principal-usuario .avatar {
+    flex-shrink: 0;
+    margin-right: 10px;
 }
 
 .comentario-principal-usuario .avatar img {
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    margin-right: 10px;
 }
 
-.comentario-principal-usuario .usuario-comentario {
-    background-color: #f0f2f5;
-    padding: 10px;
-    border-radius: 8px;
+/* Contenedor de texto del comentario */
+.contenido-comentario {
     flex: 1;
 }
 
-.usuario-comentario .texto {
-    font-size: 0.9em;
-    color: #1c1e21;
-}
-
-.usuario-comentario .nombre-usuario {
+.contenido-comentario a {
     font-weight: bold;
+    color: #365899;
     margin-right: 5px;
 }
 
+.contenido-comentario p {
+    margin: 5px 0;
+    color: #1c1e21;
+    font-size: 0.9em;
+}
+
+/* Botón para responder */
+.responder-link {
+    display: inline-block;
+    margin-top: 5px;
+    color: #4267B2;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+/* Respuestas anidadas */
+.comentario-respuesta {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+    margin-left: 50px; /* Sangría para las respuestas */
+    background-color: #e9ebee;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.comentario-respuesta .avatar img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Menú de opciones en comentarios */
 .menu-comentario {
     display: inline-block;
     position: relative;
@@ -461,6 +498,7 @@
     font-size: 0.9em;
 }
 
+/* Formulario de agregar comentario */
 .agregar-comentario form {
     display: flex;
     flex-direction: column;
@@ -476,4 +514,30 @@
     cursor: pointer;
     font-size: 0.9em;
     margin-top: 10px;
+}
+
+/* Formularios de respuesta */
+.formulario-respuesta {
+    margin-top: 10px;
+    display: none; /* Oculto por defecto, se muestra al hacer clic en "Responder" */
+}
+
+.formulario-respuesta form textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.formulario-respuesta form button {
+    background-color: #4267B2;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-top: 5px;
 }

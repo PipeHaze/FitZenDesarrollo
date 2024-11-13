@@ -10,12 +10,12 @@
         <div class="usuario-publico">
             <div class="avatar">
                 <!-- Imagen de usuario de la publicación -->
-                <img src="{{ foro.usuario.profile_image.url }}" alt="img"> <!-- Asumiendo que tienes `profile_image` en tu modelo de usuario -->
+                <img src="{{ foro.creado_por.perfil.imagen_perfil.url }}" alt="img"> <!--Se accede al foro como se definio en views, de la tabla producto se busca por quien fue creado -->
             </div>
             <div class="contenido-publicacion">
-                <h4>{{ foro.usuario.username }}</h4>
+                <h4>{{ foro.titulo }}</h4>
                 <ul>
-                    <li id="licito">{{ foro.subido_en }}</li> <!-- Fecha de publicación -->
+                    <li id="licito">{{ foro.creado }}</li> <!-- Fecha de publicación -->
                 </ul>
             </div>
             <div class="menu-comentario">
@@ -27,7 +27,7 @@
             </div>
         </div>
         
-        <p>{{ foro.texto }}</p> <!-- Texto de la publicación -->
+        <p>{{ foro.descripcion }}</p> <!-- Texto de la publicación -->
         
         <div class="archivo-publicado">
             <!-- Imagen publicada, si existe -->
@@ -38,10 +38,10 @@
         
         <!-- Botón de Like -->
         <div class="botones-comentario">
-            <form action="" method="POST">
+            <form action="{% url 'principal:like_post' foro.id %}" method="POST">
                 {% csrf_token %}
-                <button type="submit" class="boton-puntuar">
-                    <i class="fas fa-thumbs-up"></i> {{ foro.like.count }} Likes <!-- Conteo de likes -->
+                <button type="submit" class="boton-puntuar" >
+                    <i class="fas fa-thumbs-up"></i> {{ foro.likes.count }} Me gusta <!-- Conteo de likes -->
                 </button>
             </form>
         </div>
@@ -53,38 +53,78 @@
             {% for comentario in comentarios %}
             <div class="comentario-principal-usuario">
                 <div class="avatar">
-                    <img src="{{ comentario.usuario.profile_image.url }}" alt="img"> <!-- Imagen de usuario del comentario -->
+                    <img src="{{ comentario.usuario.perfil.imagen_perfil.url }}" alt="img"> <!-- Imagen de usuario del comentario -->
                 </div>
                 <div class="comentario">
                     <div class="usuario-comentario">
                         <div class="texto">
-                            <a href="#">{{ comentario.usuario.username }}</a> <!-- Nombre de usuario -->
+                            <a href="{% url 'principal:ver_perfil' comentario.usuario.user_name %}">{{ comentario.usuario.user_name }}</a> <!-- Nombre de usuario -->
                             <p>{{ comentario.campo }}</p> <!-- Texto del comentario -->
-                            
-                            <div class="menu-comentario">
-                                <i class="fas fa-pen"></i>
-                                <ul class="menu">
-                                    <li><a href="#">Editar</a></li>
-                                    <li><a href="#">Eliminar</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
+                            <!-- Botón para mostrar el formulario de respuesta -->
+        <a href="#" class="responder-link" data-comentario-id="{{ comentario.id }}">Responder</a>
+
+        <!-- Formulario de respuesta específico para este comentario -->
+        <div class="formulario-respuesta" id="form-respuesta-{{ comentario.id }}" style="display: none;">
+            <form method="post" action="{% url 'principal:foro_publicacion' foro.encrypted_slug %}">
+                {% csrf_token %}
+                <textarea name="campo" placeholder="Escribe tu respuesta aquí..."></textarea>
+                <input type="hidden" name="comentario_padre_id" value="{{ comentario.id }}">
+                <button type="submit" class="boton-responder">Responder</button>
+            </form>
+        </div>
+
+        <!-- Lista de respuestas anidadas -->
+        {% for respuesta in comentario.respuestas.all %}
+            <div class="comentario-respuesta">
+                <div class="avatar">
+                    <img src="{{ respuesta.usuario.perfil.imagen_perfil.url }}" alt="img">
+                </div>
+                <div class="comentario">
+                    <a href="{% url 'principal:ver_perfil' comentario.usuario.user_name %}">{{ respuesta.usuario.user_name }}</a>
+                    <p>{{ respuesta.campo }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
                 </div>    
             </div>
             {% endfor %}
         </div>
         
-        <!-- Formulario para agregar un nuevo comentario -->
+        <!-- Formulario de comentarios -->
         <div class="agregar-comentario">
             <h3>Deja un Comentario</h3>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }} <!-- Formulario de comentario -->
+                {{ form.as_p }}
+                <input type="hidden" name="comentario_padre_id" id="comentario_padre_id">
                 <button type="submit" class="boton-responder">Comentar</button>
             </form>
         </div>
+
     </div>
 </section>
+
+<script>
+    document.querySelectorAll('.responder-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const comentarioId = this.getAttribute('data-comentario-id');
+            const formularioRespuesta = document.getElementById(`form-respuesta-${comentarioId}`);
+            
+            // Ocultar otros formularios de respuesta
+            document.querySelectorAll('.formulario-respuesta').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // Mostrar el formulario de respuesta actual
+            formularioRespuesta.style.display = 'block';
+        });
+    });
+    </script>
+    
+    
 
 {% endblock %}
