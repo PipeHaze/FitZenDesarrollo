@@ -1,0 +1,26 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %} Pagina Principal {% endblock %}
+
+{% block content %}
+
+<div class="carrousel-container">
+    <div class="carrousel">
+        <div class="item_c">
+            <img src="{% static 'fitzen/img/fitzen.png'%}" alt="Imagen 1">
+        </div>
+        <div class="item_c">
+            <img src="{% static 'fitzen/img/turisto.png'%}" alt="Imagen 2">
+        </div>
+        <div class="item_c">
+            <img src="{% static 'fitzen/img/gato2.png'%}" alt="Imagen 3">
+        </div>
+    </div>
+    <!-- Controles de navegación -->
+    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+</div>
+
+<script src="{% static 'fitzen/js/carrousel.js' %}"></script>
+
+{% endblock %}

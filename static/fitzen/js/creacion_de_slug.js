@@ -18,4 +18,3 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Slug:", slugField.value); // Verifica el valor del slug
     });
 });
-

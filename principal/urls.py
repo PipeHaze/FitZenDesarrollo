@@ -21,6 +21,7 @@ urlpatterns = [
         path('foro_publicacion/<slug:encrypted_slug>/', views.foro_publicacion, name='foro_publicacion'),
         path('foro_publicacion/<int:post_id>/like/', views.like_post, name='like_post'),
         path('perfil/<str:user_name>/',views.ver_perfil, name='ver_perfil'),
+        path('pagina_info/', views.pagina_info, name='pagina_info')
 
 
 ]

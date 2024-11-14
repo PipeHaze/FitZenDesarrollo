@@ -20,6 +20,9 @@ def paginaprincipal(request):
     producto = Producto.producto.filter(aprobado = True)  # Obtener todos los productos, al principio voy a traer todos los objetos, despues va a hacer con object or 404.
     return render(request,"app/paginaprincipal.html", {'producto': producto})
 
+def pagina_info(request):
+    return render(request, "app/pagina_info.html")
+
 def producto_info(request, encrypted_slug):
     # Desencriptar el slug
     slug = decrypt_slug(encrypted_slug)
