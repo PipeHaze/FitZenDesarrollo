@@ -46,6 +46,17 @@
             </form>
         </div>
         
+        <!-- Formulario de comentarios -->
+        <div class="agregar-comentario">
+            <h3>Deja un Comentario</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="comentario_padre_id" id="comentario_padre_id">
+                <button type="submit" class="boton-responder">Comentar</button>
+            </form>
+        </div>
+
         <!-- Sección de Comentarios -->
         <div class="comentarios-usuarios">
             <h3>Comentarios</h3>
@@ -91,17 +102,6 @@
                 </div>    
             </div>
             {% endfor %}
-        </div>
-        
-        <!-- Formulario de comentarios -->
-        <div class="agregar-comentario">
-            <h3>Deja un Comentario</h3>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="hidden" name="comentario_padre_id" id="comentario_padre_id">
-                <button type="submit" class="boton-responder">Comentar</button>
-            </form>
         </div>
 
     </div>

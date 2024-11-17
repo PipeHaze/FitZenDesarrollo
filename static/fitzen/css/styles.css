@@ -610,3 +610,9 @@
 .prev:hover, .next:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
+
+#label_registro {
+    border-radius: 3px;
+    border-color: black;
+    border: solid;
+}
