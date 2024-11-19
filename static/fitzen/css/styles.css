@@ -542,6 +542,20 @@
     margin-top: 5px;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.contenido {
+    flex: 1;
+}
+
 .footer {
     background-color: lightcoral;
     margin-top: auto;
@@ -615,4 +629,15 @@
     border-radius: 3px;
     border-color: black;
     border: solid;
+}
+
+#input_comentario {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical; /* Permite cambiar el tamaño de la caja de texto en vertical */
+    margin-bottom: 15px;
+    background-color: #fafafa;
 }
