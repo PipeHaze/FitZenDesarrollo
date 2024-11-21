@@ -30,6 +30,18 @@
       </button>
       <div" class="collapse navbar-collapse " id="navbarSupportedContent">
         <ul  class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+
+          <div class="navbar-nav ml-auto d-flex justify-content-center align-items-center w-100">
+            <li class="nav-item">
+                <a href="{% url 'principal:pagina_info' %}" class="nav-link" style="color: white; text-decoration: underline; font-size: larger;">Informacion</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'principal:foro_principal' %}" class="nav-link" style="color: white; text-decoration: underline; font-size: larger;">Foro</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'principal:paginaprincipal' %}" class="nav-link" style="color: white; text-decoration: underline; font-size: larger;">Tienda</a>
+            </li>
+          </div>
           
           <li class="nav-item dropdown my-auto">
             <a class="nav-link dropdown-toggle" style="color: rgb(213, 213, 213);font-size: medium;" href="#" id="navbarDropdown"
@@ -49,11 +61,6 @@
             </ul>
 
           </li>
-
-          <!-- Ingreso al Foro -->
-          <div>
-            
-          </div>
 
           <!-- Dropdown de usuario -->
           <div class="dropdown">
@@ -133,10 +140,9 @@
     <div class="item">
       <h4>Enlaces de navegacion</h4>
       <ul>
-        <li><a href="#" target="_blank">Pagina Principal</a></li>
-        <li><a href="#" target="_blank">Foro</a></li>
-        <li><a href="#" target="_blank">Tienda</a></li>
-        <li><a href="#" target="_blank">Perfil</a></li>
+        <li><a href="{% url 'principal:paginaprincipal' %}" target="_blank">Pagina Principal</a></li>
+        <li><a href="{% url 'principal:foro_principal' %}" target="_blank">Foro</a></li>
+        <li><a href="{% url 'principal:paginaprincipal' %}" target="_blank">Tienda</a></li>
       </ul>
     </div>
   </div>
