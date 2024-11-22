@@ -12,7 +12,12 @@
         border-color: 2px solid #ccc;
     }
 </style>
-<div class="col-12 col-md-6 offset-md-3">
+
+<div class="col-12 col-md-6 offset-md-3" style="padding-top: 50px ; padding-bottom: 50px;">
+
+    <h2>Agregar un producto</h2>
+    <p style="font-size: 1rem; color: grey; margin-top: 5px;">Completa el siguiente formulario con los datos del producto a agregar</p>
+
     <form method="post" enctype="multipart/form-data" id="productoForm">
         {% csrf_token %}
     
@@ -51,7 +56,7 @@
             {{ form.categoria }}
         </div>
     
-        <button type="submit" id="btn-submit" class="btn btn-success">Agregar Producto</button>
+        <button type="submit" id="btn-submit" class="btn btn-success bi bi-file-check-fill">Agregar Producto</button>
     </form>
 
     

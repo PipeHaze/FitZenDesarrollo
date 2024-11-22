@@ -1,0 +1,55 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %} Pagina Principal {% endblock %}
+
+{% block content %}
+
+<div class="carrousel-container" style="padding-top: 50px; padding-bottom: 50px;">
+    <div class="carrousel">
+        <div class="item_c">
+            <img src="{% static 'fitzen/img/fitzen.png'%}" alt="Imagen 1">
+        </div>
+        <div class="item_c">
+            <img src="{% static 'fitzen/img/turisto.png'%}" alt="Imagen 2">
+        </div>
+        <div class="item_c">
+            <img src="{% static 'fitzen/img/se_adapta_legalmente.png'%}" alt="Imagen 3">
+        </div>
+    </div>
+    <!-- Controles de navegación -->
+    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+</div>
+
+
+<div style="display: flex; height: 80vh; border-bottom: 3px solid grey;">
+    <div style="flex: 1; padding: 20px; text-align: center;">
+        <h1>Mision</h1>
+        <p style="margin-top: 20%; font-size: large;"> El mercado de la salud y el bienestar a estado en constante crecimiento en los últimos años, 
+            más aún en productos relacionados al área fitness, junto con la capacidad de realizar compras
+            en línea junto con una preocupación por el cuidado de la salud y el llevar un estilo de vida saludable,
+            se a detectado una oportunidad para crear una plataforma que permita la compra de suplementos deportivos como su principal 
+            función, al igual que ser un sitio de confianza para la comunidad fitness a la hora de dar consejos o obtener recursos de información.</p>
+    </div>
+    <div style="flex: 1; padding: 20px;text-align: center;">
+        <img src="{% static 'fitzen/img/7978312.png'%}" alt="No se cargo la Imagen" style="margin: auto; display: block; margin-top: 50px;">
+    </div>
+</div>
+
+<div style="display: flex; height: 80vh;">
+    <div style="flex: 1; padding: 20px; text-align: center;">
+        <img src="{% static 'fitzen/img/icono_vision.jpg'%}" alt="No se cargo la Imagen" style="margin: auto; display: block; margin-top: 50px; max-width: 70%; height: auto;">
+    </div>
+    <div style="flex: 1; text-align: center; padding: 20px">
+        <h1>Vision</h1>
+        <p style="margin-top: 20%; font-size: large;">Para lograr nuestro objetivo, se a tomado la decisión de llevar a cabo una pagina web que sirva como una 
+            plataforma para realizar la venta de los productos, que brindara una experiencia intuitiva y segura, donde 
+            podrán consultar el stock de los productos, ver el precio y la características de estos mismos, al igual que 
+            se tendrá como un añadido, un foro donde podran encontrar mas informacion sobre tener un buen bienestar de vida, 
+            dando pie a tener un espacio donde los usuarios sean libres de compartir sus experiencias o consejos.</p>
+    </div>
+</div>
+
+<script src="{% static 'fitzen/js/carrousel.js' %}"></script>
+
+{% endblock %}

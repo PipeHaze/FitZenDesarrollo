@@ -4,15 +4,16 @@
 
 {% block content %}
 
-<h1>Foro Principal</h1>
+<h1 style="text-align: center; padding-top: 10px; padding-bottom: 10px;">Foro Principal</h1>
 
 {% if foro_productos %}
-    <div class="foro-lista">
+    <div class="foro-lista" style="padding-bottom: 50px;">
         {% for foro_producto in foro_productos %}
             <div class="producto-card">
                 <div class="producto-header">
                     <img src="{{ foro_producto.imagen.url }}" alt="{{ foro_producto.nombre }}" class="img-producto">
                     <div class="producto-info">
+                        <p>Titulo del foro</p>
                         <h2>{{ foro_producto.nombre }}</h2> <!-- Nombre del producto -->
                         <span class="producto-date">{{ foro_producto.subido }} | {{ foro_producto.creado_por }}</span> <!-- Fecha de subida -->
                     </div>
@@ -27,13 +28,14 @@
                 <div class="producto-footer">
                     
                     <p><strong>{{ foro_producto.conteo_comentarios }} comentarios</strong></p>
-                    <a href="{% url 'principal:foro_publicacion' foro_producto.encrypted_slug %}" class="btn-ver-detalles">Ver Producto</a>
+                    <a href="{% url 'principal:foro_publicacion' foro_producto.encrypted_slug %}" class="btn-ver-detalles bi bi-body-text"> Ver Producto</a>
                     
                 </div>
                 
             </div>
         {% endfor %}
     </div>
+
 {% else %}
     <p>No hay publicaciones en el foro.</p>
 {% endif %}

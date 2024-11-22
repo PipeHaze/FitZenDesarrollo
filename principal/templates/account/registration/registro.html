@@ -35,16 +35,16 @@
     {% endfor %}
     {% endif %}
 
-    <label id="nombre">{{ form.user_name.label }}<span class="text-muted small">
+    <label id="nombre" style="display: block; text-align: center; width: 60%;">{{ form.user_name.label }}<span class="text-muted small">
             (Required)</span></label>
     {{ form.user_name }}
-    <label id="correo">{{ form.email.label }}<span class="text-muted small">
+    <label id="correo" style="display: block; text-align: center; width: 57%;">{{ form.email.label }}<span class="text-muted small">
             (Required)</span></label>
     {{ form.email }}
-    <label id="contra1">{{ form.password.label }}<span class="text-muted mb-4">
+    <label id="contra1" style="display: block; text-align: center; width: 60%;">{{ form.password.label }}<span class="text-muted mb-4">
         (Required)</span></label>
     {{ form.password }}
-    <label label="contra2">{{ form.password2.label }}<span class="text-muted small">
+    <label label="contra2" style="display: block; text-align: center; width: 64%;">{{ form.password2.label }}<span class="text-muted small">
         (Required)</span></label>
     {{ form.password2 }}
     <button class="btn btn-primary" type="submit" id="button_2">Registrate</button>

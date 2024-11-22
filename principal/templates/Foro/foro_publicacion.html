@@ -46,12 +46,23 @@
             </form>
         </div>
         
+        <!-- Formulario de comentarios -->
+        <div class="agregar-comentario">
+            <h3>Deja un Comentario</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="comentario_padre_id" id="comentario_padre_id">
+                <button type="submit" class="boton-responder">Comentar</button>
+            </form>
+        </div>
+
         <!-- Sección de Comentarios -->
         <div class="comentarios-usuarios">
             <h3>Comentarios</h3>
             
             {% for comentario in comentarios %}
-            <div class="comentario-principal-usuario">
+            <div class="comentario-principal-usuario" style="padding-bottom: 50px;">
                 <div class="avatar">
                     <img src="{{ comentario.usuario.perfil.imagen_perfil.url }}" alt="img"> <!-- Imagen de usuario del comentario -->
                 </div>
@@ -76,7 +87,7 @@
 
         <!-- Lista de respuestas anidadas -->
         {% for respuesta in comentario.respuestas.all %}
-            <div class="comentario-respuesta">
+            <div class="comentario-respuesta" style="padding-bottom: 50px">
                 <div class="avatar">
                     <img src="{{ respuesta.usuario.perfil.imagen_perfil.url }}" alt="img">
                 </div>
@@ -91,17 +102,6 @@
                 </div>    
             </div>
             {% endfor %}
-        </div>
-        
-        <!-- Formulario de comentarios -->
-        <div class="agregar-comentario">
-            <h3>Deja un Comentario</h3>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="hidden" name="comentario_padre_id" id="comentario_padre_id">
-                <button type="submit" class="boton-responder">Comentar</button>
-            </form>
         </div>
 
     </div>
