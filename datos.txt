@@ -1,7 +1,6 @@
 **--Tarjetas--**
 pasa sin mensaje: 4242424242424242
 Si pasa pero sale mensaje: 4000002500003155
-Error: 4000000000009995
 ****************
 
 ------PUEDE SERVIR-------
