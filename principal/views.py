@@ -48,7 +48,7 @@ def agregarproducto(request):
             producto.aprobado = False # QUE NO SE ME OLVIDE CAMBIARLO A FALSE PARA APROBAR EL PRODUCTO
             producto.save()
             messages.success(request, 'el producto se ha agregado, pero tiene que ser aprobado por el administrador')
-            return redirect(to='principal:paginaprincipal')
+            return redirect(to='principal:agregarproducto')
     else:
         form = ProductoForm()
     return render(request, 'app/agregarproducto.html', {'form': form})

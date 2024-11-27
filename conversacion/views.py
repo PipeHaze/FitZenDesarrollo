@@ -3,41 +3,47 @@ from principal.models import Producto
 from .models import Conversacion, ConversacionMensaje
 from .forms import ConversationMessageForm, ConversationMessageForm2
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 # Create your views here.
+
+
 def nueva_conversacion(request, encrypted_slug):
-    producto = get_object_or_404(Producto, slug = encrypted_slug, en_stock = True) #del modelo producto se traen las variables, la url encriptada y el stock si esta disponible
+    producto = get_object_or_404(Producto, slug=encrypted_slug, en_stock=True) #del modelo producto se traen las variables, la url encriptada y el stock si esta disponible
 
     if producto.creado_por == request.user:
         return redirect('principal:paginaprincipal')
-    
-    conversaciones = Conversacion.objects.filter(producto = producto).filter(miembros__in = [request.user.id])
+
+    conversaciones = Conversacion.objects.filter(producto=producto).filter(miembros__in=[request.user.id])
 
     if conversaciones.exists():
-        pass #si existe ignora este if pasa al otro
+        pass
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
 
         if form.is_valid():
-            #crear conversaciones y miembros
-            conversacion = Conversacion.objects.create(producto = producto)
+            # Crear conversación y miembros
+            conversacion = Conversacion.objects.create(producto=producto)
             conversacion.miembros.add(request.user)
             conversacion.miembros.add(producto.creado_por)
             conversacion.save()
 
-            #guardar los mensajes
-            conversacion_mensaje = form.save(commit = False)
-            conversacion_mensaje.conversacion = conversacion #cargar los objetos que tiene guardado conversacion
+            # Guardar los mensajes
+            conversacion_mensaje = form.save(commit=False)
+            conversacion_mensaje.conversacion = conversacion
             conversacion_mensaje.creado_por = request.user
             conversacion_mensaje.save()
 
-            return redirect('principal:informacion_productos', encrypted_slug = producto.encrypted_slug)
-    else:
-        form = ConversationMessageForm
+            # Agregar mensaje de éxito
+            messages.success(request, "El mensaje se envió correctamente.")
 
-    return render(request, 'conversacion/nuevaconversacion.html', {'form':form, 'producto':producto})
+            return redirect('principal:informacion_productos', encrypted_slug=producto.encrypted_slug)
+    else:
+        form = ConversationMessageForm()
+
+    return render(request, 'conversacion/nuevaconversacion.html', {'form': form, 'producto': producto})
 
 @login_required
 def inbox(request):

@@ -2,6 +2,7 @@ from decimal import Decimal
 from principal.models import Producto
 from django.shortcuts import get_object_or_404
 
+
 class Carrito():
 
     """
@@ -25,18 +26,22 @@ class Carrito():
         self.carrito = carrito
 
     def agregar(self, producto, qty):
-        """
-          funcion que agrega un producto al carrito de compras
-        """
 
-        producto_id = str(producto.id)
+      """
+      funcion que permite agregar un producto al carrito de compras, con la variable carrito,
+      el sistema busca el producto por su id y la cantidad que va a llevar el usuario para almacenar el producto
+      al carrito.
+      """
+      
+      producto_id = str(producto.id)
 
-        if producto_id in self.carrito:
-            self.carrito[producto_id]['qty'] = qty
-        else:
-            self.carrito[producto_id] = {'precio': str(producto.precio), 'qty' : qty, 'id_producto': str(producto.id)}
+      if producto_id in self.carrito:
+        self.carrito[producto_id]['qty'] = qty
+      else:
+        self.carrito[producto_id] = {'precio': str(producto.precio), 'qty' : qty, 'id_producto': str(producto.id)}
+        
+      self.guardar()
 
-            self.guardar()
 
     def __iter__(self):
         """
@@ -60,28 +65,26 @@ class Carrito():
         funcion que muestra la cantidad de productos almacenados en el carrito de compras
         """
         return sum(item['qty'] for item in self.carrito.values())
-    
+
     def get_subtotal_precio(self):
-        """
-        funcion que calcula el total de los productos.
-        """
 
-        return sum(Decimal(item['precio']) * item['qty'] for item in self.carrito.values())
-    
+      """
+      funcion que devuelve el precio total de los productos.
+      """
+      return sum(Decimal(item['precio']) * item['qty'] for item in self.carrito.values())
+
     def get_total_precio(self):
-        """
-        funcion que calcula el precio total de la compra
-        """
+      subtotal = sum(Decimal(item['precio']) * item['qty'] for item in self.carrito.values())
 
-        subtotal = sum(Decimal(item['precio']) * item['qty'] for item in self.carrito.values())
+      if subtotal == 0:
+        shipping = Decimal(0.00) #shipping es la compra 
+      else:
+        shipping = Decimal(3.500)
+      
+      total = subtotal + Decimal(shipping)
+      return total  # le cambie el tipo de retorno, despues se lo vuelvo a cambiar
 
-        if subtotal ==0: # el subtotal de la compra es 0
-            shipping = Decimal(0.00)
-        else:
-            shipping = Decimal(3.500) #3.500 es el costo de envio
-        
-        total = subtotal + Decimal(shipping) #al subtotal del producto se le agrega el costo del envio y esto seria el pago total que hace un usuario
-        return total
+
 
     def eliminar(self, producto):
         """

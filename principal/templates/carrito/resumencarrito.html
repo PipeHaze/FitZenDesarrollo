@@ -35,7 +35,7 @@
           </div>
           <div class="text-end">
             
-            <div class="">Sub Total: <span class="fw-bold">$</span><div id="subtotal" class="d-inline-flex fw-bold">{{carritocompras.get_subtotal_precio}}</div></div>
+            <div class="">Sub Total: <span class="fw-bold">$</span><div id="subtotal" class="d-inline-flex fw-bold"> {{carritocompras.get_subtotal_precio}}</div></div>
             <div id="">Envio <span class="small">(entrega al dia siguiente)</span>: <span class="fw-bold">$3500</span></div>
             <div class="pt-2">Total a pagar: <span class="fw-bold h5">$</span><span id="total" class="fw-bold h5">{{carritocompras.get_total_precio}}</span></div>
             
@@ -111,38 +111,48 @@
         });
     })
     //eliminar
-    $(document).on('click', '.delete-button', function(e){
-        e.preventDefault();
-        var prodid = $(this).data('index');
-        $.ajax({
-            type: 'POST',
-            url: '{% url "carritocompras:carrito_eliminar" %}',
-            data: {
-                productoid: $(this).data('index'),
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'post'
-            },
-            success: function(json){
-              $('.product-item[data-index="'+ prodid + '"]').remove();
+    $(document).on('click', '.delete-button', function (e) {
+    e.preventDefault();
+    var prodid = $(this).data('index');
+    $.ajax({
+        type: 'POST',
+        url: '{% url "carritocompras:carrito_eliminar" %}',
+        data: {
+            productoid: prodid,
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+            action: 'post'
+        },
+        success: function (json) {
+            // Eliminar el producto del DOM
+            $('.product-item[data-index="' + prodid + '"]').remove();
 
-              if(json.qty == 0){
-                total = 0
-                subtotal = 0
-              } else{
-                total = parseFloat(json.subtotal + 3.500).toFixed(2);
-                subtotal = json.subtotal
-              }
+            // Manejar los valores de subtotal y total
+            const subtotal = parseFloat(json.subtotal).toLocaleString('es-CL', {
+                style: 'currency',
+                currency: 'CLP'
+            });
+            const total = parseFloat(json.total).toLocaleString('es-CL', {
+                style: 'currency',
+                currency: 'CLP'
+            });
 
-              document.getElementById("subtotal").innerHTML = json.subtotal;
-              document.getElementById("carrito-qty").innerHTML = json.qty;
-              document.getElementById("total").innerHTML = json.total;
+            document.getElementById("subtotal").innerHTML = subtotal;
+            document.getElementById("carrito-qty").innerHTML = json.qty;
+            document.getElementById("total").innerHTML = total;
 
-            },
-            error: function(xhr, errmsg, err){}
-        });
-    })
-    //modificar
-    $(document).on('click', '.update-button', function(e){
+            // Si el carrito está vacío, muestra 0 de forma clara
+            if (json.qty === 0) {
+                document.getElementById("subtotal").innerHTML = '$0';
+                document.getElementById("total").innerHTML = '$0';
+            }
+        },
+        error: function (xhr, errmsg, err) {
+            console.error("Error al eliminar el producto:", errmsg);
+        }
+    });
+});
+//modificar
+$(document).on('click', '.update-button', function(e){
         e.preventDefault();
         var prodid = $(this).data('index');
         $.ajax({
@@ -164,6 +174,10 @@
             error: function(xhr, errmsg, err){}
         });
     })
+
+
+
+
   </script>
 
 {% endblock %}

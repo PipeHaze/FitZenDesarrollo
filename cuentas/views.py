@@ -160,7 +160,7 @@ def editar_perfil(request, user_id):
     
     return render(request, 'account/user/editar_perfil.html', {'form_user': form_user, 'user_id': user_id})
 
-@permission_required('app.delete_producto')
+@login_required
 def agregar_a_favoritos(request, id):
     producto = get_object_or_404(Producto, id=id)
     if producto.usuario_favoritos.filter(id=request.user.id).exists():
