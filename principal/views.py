@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Categoria, Producto, Like
 from .utils import decrypt_slug, encrypt_slug
 from django.contrib.auth.decorators import login_required, permission_required
-from .forms import ProductoForm, ComentarioForm
+from .forms import ProductoForm, ComentarioForm, EditarProducto
 from django.contrib import messages
 from django.db.models import Q
 from cuentas.models import UserBase
@@ -148,6 +148,30 @@ def ver_perfil(request, user_name=None):
     else:
         user = current_user
 
-    
-
     return render(request, "account/user/dashboard.html", {'user': user})
+
+def editarproducto(request, encrypted_slug):
+    # Desencriptar el slug
+    slug = decrypt_slug(encrypted_slug)
+    
+    # Obtener el producto usando el slug desencriptado
+    producto = get_object_or_404(Producto, slug=slug, en_stock=True, creado_por=request.user)
+    
+    if request.method == 'POST':
+        form = EditarProducto(request.POST, request.FILES, instance=producto)
+        if form.is_valid():
+            form.save()
+            # Redirigir usando el slug encriptado nuevamente
+            return redirect('principal:informacion_productos', encrypted_slug=producto.encrypted_slug)
+    else:
+        form = EditarProducto(instance=producto)
+    
+    return render(request, "app/editarproducto.html", {
+        'form': form,
+        'title': 'Editar tu producto'
+    })
+
+def eliminarproducto(request, slug):
+    producto = get_object_or_404(Producto, slug=slug, en_stock=True, creado_por=request.user)
+    producto.delete()
+    return redirect('principal:informacion_productos')

@@ -21,7 +21,11 @@ urlpatterns = [
         path('foro_publicacion/<slug:encrypted_slug>/', views.foro_publicacion, name='foro_publicacion'), #Listo
         path('foro_publicacion/<int:post_id>/like/', views.like_post, name='like_post'), #Listo
         path('perfil/<str:user_name>/',views.ver_perfil, name='ver_perfil'), #listo
-        path('pagina_info/', views.pagina_info, name='pagina_info')
+        path('pagina_info/', views.pagina_info, name='pagina_info'),
+        path('editar_producto/<str:encrypted_slug>/', views.editarproducto, name='editar_producto'),
+        path('eliminar_producto/<slug:slug>/',views.eliminarproducto, name='eliminar_producto'), 
+
+
 
 
 ]

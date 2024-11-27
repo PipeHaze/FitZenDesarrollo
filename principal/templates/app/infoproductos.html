@@ -21,6 +21,7 @@
 
 <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5 pt-1"  >
     <h1 class="mb-0 h4">{{ producto.titulo }}</h1>
+    
     <p><span class="lead">Vendido por <br> <span style="color: chocolate ;">{{ producto.creado_por }}</span> </span> </p>
     <span>Sobre este producto</span> <br> 
         <p style="word-break: break-all;">{{ producto.descripcion | slice:":355" }}</p>
@@ -67,13 +68,20 @@
     </div>
     {% if request.user == producto.creado_por %}
         <div class="container rounded bg-light mt-2 py-3" >
-                    
+            <a href="{% url 'principal:editar_producto' producto.encrypted_slug %}" class="btn btn-primary mb-2">Editar</a>
+            <a href="{% url 'principal:eliminar_producto' producto.slug %}" class="btn btn-danger mb-2" onclick="return confirmDelete();">Eliminar</a>
+
         </div>
         {% else %}
             <a href="{% url 'conversacion:nuevaconversacion' producto.slug %}" class="inline-block btn btn-warning mb-2 ms-2 bi bi-chat-fill"> Contactar vendedor </a>
     {% endif %}
+        
+    
+</div>
+<br>
+</div>    
 
-    <script>
+<script>
 
     $(document).on('click', '#agregar-button', function(e){
         e.preventDefault();
@@ -93,9 +101,11 @@
         });
     })
 
+    function confirmDelete() {
+        return confirm("¿Estás seguro de eliminar este producto?");
+    }
+
     </script>
-</div>
-</div>    
 
 {% endblock %}
 
