@@ -559,12 +559,31 @@ body {
 .footer {
     background-color: lightcoral;
     margin-top: auto;
+    padding: 10px;
+    text-align: center;
 }
 
+/* Contenedor principal */
 .Contenido_Footer {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) { /* Para tablets y móviles */
+    .footer {
+        text-align: center;
+        padding: 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) { /* Para móviles pequeños */
+    .footer {
+        padding: 20px;
+        font-size: 12px;
+    }
 }
 
 .contenedor{

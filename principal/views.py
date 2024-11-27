@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.db.models import Q
 from cuentas.models import UserBase
 from django.contrib.auth.models import AnonymousUser
+from django.http import HttpResponseForbidden
+
 
 
 
@@ -150,12 +152,17 @@ def ver_perfil(request, user_name=None):
 
     return render(request, "account/user/dashboard.html", {'user': user})
 
+
 def editarproducto(request, encrypted_slug):
     # Desencriptar el slug
     slug = decrypt_slug(encrypted_slug)
     
     # Obtener el producto usando el slug desencriptado
-    producto = get_object_or_404(Producto, slug=slug, en_stock=True, creado_por=request.user)
+    producto = get_object_or_404(Producto, slug=slug, en_stock=True)
+    
+    # Verificar que el usuario tiene permiso para editar/eliminar el producto
+    if producto.creado_por != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("No tienes permisos para editar o eliminar este producto.")
     
     if request.method == 'POST':
         form = EditarProducto(request.POST, request.FILES, instance=producto)
@@ -172,6 +179,14 @@ def editarproducto(request, encrypted_slug):
     })
 
 def eliminarproducto(request, slug):
-    producto = get_object_or_404(Producto, slug=slug, en_stock=True, creado_por=request.user)
+    # Obtener el producto usando el slug
+    producto = get_object_or_404(Producto, slug=slug, en_stock=True)
+    
+    # Verificar que el usuario tiene permiso para eliminar el producto
+    if producto.creado_por != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("No tienes permisos para eliminar este producto.")
+    
+    # Eliminar el producto
     producto.delete()
+    
     return redirect('principal:informacion_productos')

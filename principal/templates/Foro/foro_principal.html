@@ -13,8 +13,7 @@
                 <div class="producto-header">
                     <img src="{{ foro_producto.imagen.url }}" alt="{{ foro_producto.nombre }}" class="img-producto">
                     <div class="producto-info">
-                        <p>Titulo del foro</p>
-                        <h2>{{ foro_producto.nombre }}</h2> <!-- Nombre del producto -->
+                        <p>{{ foro_producto.titulo }}</p>                     
                         <span class="producto-date">{{ foro_producto.subido }} | {{ foro_producto.creado_por }}</span> <!-- Fecha de subida -->
                     </div>
                 </div>
@@ -28,7 +27,7 @@
                 <div class="producto-footer">
                     
                     <p><strong>{{ foro_producto.conteo_comentarios }} comentarios</strong></p>
-                    <a href="{% url 'principal:foro_publicacion' foro_producto.encrypted_slug %}" class="btn-ver-detalles bi bi-body-text"> Ver Producto</a>
+                    <a href="{% url 'principal:foro_publicacion' foro_producto.encrypted_slug %}" class="btn-ver-detalles bi bi-body-text"> Comentarios sobre el producto</a>
                     
                 </div>
                 

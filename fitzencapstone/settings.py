@@ -93,11 +93,6 @@ DATABASES = {
 }
 """
 
-
-
-
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
@@ -111,10 +106,6 @@ DATABASES = {
         },
     }
 }
-
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -133,7 +124,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -160,7 +150,6 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
 DEFAULT_WIDTH = 460
 
 DEFAULT_HEIGHT = 325
@@ -175,8 +164,6 @@ SECRET_KEY = 'tHEQpu_aXvUYqh4gSNBaO4pilrEu1uQhrdt2ekYZGmw=' # Usa la clave gener
 #CRISPY FORMS
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # permite mandar "correos"
-
 AUTH_USER_MODEL = 'cuentas.UserBase'
 
 LOGIN_REDIRECT_URL = '/'
@@ -186,4 +173,10 @@ LOGIN_URL = '/account/login/'
 STRIPE_ENDPOINT_SECRET = 'whsec_3b152fd19dc7e23c8f2a9f5bc4ce50be53a6aa35e57df1bcc2824f6398c09e4f'
 
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # permite mandar "correos" en modo de prueba. 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # permite mandar "correos" de verdad
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'felipe.morgado2000@gmail.com'
+EMAIL_HOST_PASSWORD = 'jbahzhkqptmtyasw'
+EMAIL_USE_TLS = True  # Asegúrate de que esté activado

@@ -26,6 +26,4 @@ urlpatterns = [
         path('eliminar_producto/<slug:slug>/',views.eliminarproducto, name='eliminar_producto'), 
 
 
-
-
 ]

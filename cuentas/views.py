@@ -21,44 +21,55 @@ from django.contrib import messages
 
 # Create your views here.
 
+from django.core.mail import send_mail
+
 def registro_usuarios(request):
     if request.method == 'POST':
         registerForm = RegistrationForm(request.POST)
         if registerForm.is_valid():
-            user = registerForm.save(commit = False)
+            user = registerForm.save(commit=False)
             user.email = registerForm.cleaned_data['email']
             user.set_password(registerForm.cleaned_data['password'])
-            user.is_active = False #el usuario tiene que activarse.
+            user.is_active = False
             user.save()
-            #configurar email
+            # Configurar email
             current_site = get_current_site(request)
             subject = 'Activa tu cuenta'
-            message = render_to_string('account/registration/account_activation_email.html',{
+            message = render_to_string('account/registration/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user), #se le tiene que asignar el token, se crea con token.py y agregar aqui.
+                'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject = subject, message = message) #en el terminal se muestra esto
-            return HttpResponse('Registro exitoso, se ha enviado la activacion.')
+            # Enviar correo
+            send_mail(
+                subject,
+                message,
+                'felipe.morgado2000@gmail.com',  # Remitente
+                [user.email],  # Destinatario
+                fail_silently=False,
+            )
+            return HttpResponse('Registro exitoso, se ha enviado la activación.')
     else:
         registerForm = RegistrationForm()
     return render(request, 'account/registration/registro.html', {'form': registerForm})
 
+
 def account_activate(request, uidb64, token):
-    "funcion que muestra el mensaje para activar la cuenta"
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = UserBase.objects.get(pk = uid)
-    except(TypeError):
-        pass
-    
+        user = UserBase.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, UserBase.DoesNotExist):
+        user = None
+
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
         login(request, user)
+        messages.success(request, '¡Tu cuenta ha sido activada con éxito!')
         return redirect('principal:paginaprincipal')
     else:
+        messages.error(request, 'El enlace de activación no es válido o ha expirado.')
         return render(request, 'account/registration/activation_invalid.html')
     
 @login_required
