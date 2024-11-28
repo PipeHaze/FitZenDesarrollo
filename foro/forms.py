@@ -34,3 +34,19 @@ class ForoForm(forms.ModelForm):
         super(ForoForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+
+class EditarForo(forms.ModelForm):
+    class Meta:
+        model = Foro
+        fields = ('titulo', 'descripcion', 'imagen')
+        widgets={
+            'titulo': forms.TextInput(attrs={
+                'class':'form-control',
+            }),
+            'descripcion': forms.Textarea(attrs={
+                'class': 'form-control',
+            }),
+            'imagen': forms.FileInput(attrs={
+                'class':'form-control',               
+            }),                
+        }

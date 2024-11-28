@@ -12,6 +12,10 @@ urlpatterns = [
     path('foro_publicacion/<slug:encrypted_slug>/', views.foro_publicacion, name='foro_publicacion'), #Listo
     path('foro_publicacion/<int:post_id>/like/', views.like_post, name='like_post'), #Listo
     path('agregarforo/',views.agregarforo,name="agregarforo"), #Listo
+    path('eliminar_producto/<slug:slug>/',views.eliminarforo, name='eliminar_foro'),
+    path('editar_foro/<str:encrypted_slug>/', views.editarforo, name='editar_foro'),
+
+
 
 
 

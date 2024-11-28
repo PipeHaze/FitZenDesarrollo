@@ -1,9 +1,11 @@
 from .models import Foro
 from principal.utils import decrypt_slug, encrypt_slug
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ComentarioForm, ForoForm
+from .forms import ComentarioForm, ForoForm, EditarForo
 from principal.models import Like
 from django.contrib import messages
+from django.http import HttpResponseForbidden
+
 
 
 
@@ -79,3 +81,41 @@ def agregarforo(request):
     else:
         form = ForoForm()
     return render(request, 'Foro/agregarforo.html', {'form': form})
+
+def eliminarforo(request, slug):
+    # Obtener el producto usando el slug
+    foro = get_object_or_404(Foro, slug=slug)
+    
+    # Verificar que el usuario tiene permiso para eliminar el producto
+    if foro.creado_por != request.user and not request.user.is_superuser: #el foro despues del . son las propiedades que contiene el modelo del foro
+        return HttpResponseForbidden("No tienes permisos para eliminar este producto.")
+    
+    # Eliminar el producto
+    foro.delete()
+    
+    return redirect('foro:foro_principal')
+
+def editarforo(request, encrypted_slug):
+    # Desencriptar el slug
+    slug = decrypt_slug(encrypted_slug)
+    
+    # Obtener el producto usando el slug desencriptado
+    foro = get_object_or_404(Foro, slug=slug)
+    
+    # Verificar que el usuario tiene permiso para editar/eliminar el producto
+    if foro.creado_por != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("No tienes permisos para editar o eliminar este producto.")
+    
+    if request.method == 'POST':
+        form = EditarForo(request.POST, request.FILES, instance=foro)
+        if form.is_valid():
+            form.save()
+            # Redirigir usando el slug encriptado nuevamente
+            return redirect('foro:foro_principal')
+    else:
+        form = EditarForo(instance=foro)
+    
+    return render(request, "foro/editarforo.html", {
+        'form': form,
+        'title': 'Editar foro publicado'
+    })

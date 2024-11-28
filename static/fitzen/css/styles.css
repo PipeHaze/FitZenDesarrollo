@@ -660,3 +660,59 @@ body {
     margin-bottom: 15px;
     background-color: #fafafa;
 }
+
+
+/*MENU DEL FOROOOO*/
+.producto-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.producto-info-header p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.menu-comentario {
+    position: relative;
+    cursor: pointer;
+}
+
+.menu-comentario i {
+    font-size: 16px;
+    color: #555;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    list-style: none;
+    padding: 5px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.menu li {
+    padding: 5px 15px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: black;
+}
+
+.menu li a:hover {
+    background-color: #f0f0f0;
+    color: #007BFF;
+}
+
+.menu-comentario:hover .menu {
+    display: block;
+}
