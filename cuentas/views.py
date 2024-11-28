@@ -39,7 +39,7 @@ def registro_usuarios(request):
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
+                'token': account_activation_token.make_token(user), # el token de token.py
             })
             # Enviar correo
             send_mail(
@@ -98,7 +98,7 @@ def borrar_usuarios(request): #se llama a esta funcion para que elimine la cuent
     funcion que desactiva una cuenta, ya que en la base de datos el usuario no se borra
     """
     user = UserBase.objects.get(user_name=request.user)
-    user.is_active = False
+    user.is_active = False #el usuario queda desactivado en la BD, pero el administrador lo puede volevr a activar
     user.save()
     logout(request) #cuando se "borra el usuario, se cierra la sesion, el usuario no puede volver a logearse"
     return redirect('cuentas:confirma_eliminacion')

@@ -38,7 +38,7 @@
         
         <!-- Botón de Like -->
         <div class="botones-comentario">
-            <form action="{% url 'principal:like_post' foro.id %}" method="POST">
+            <form action="{% url 'foro:like_post' foro.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="boton-puntuar" >
                     <i class="fas fa-thumbs-up"></i> {{ foro.likes.count }} Me gusta <!-- Conteo de likes -->
@@ -77,7 +77,7 @@
 
         <!-- Formulario de respuesta específico para este comentario -->
         <div class="formulario-respuesta" id="form-respuesta-{{ comentario.id }}" style="display: none;">
-            <form method="post" action="{% url 'principal:foro_publicacion' foro.encrypted_slug %}">
+            <form method="post" action="{% url 'foro:foro_publicacion' foro.encrypted_slug %}">
                 {% csrf_token %}
                 <textarea name="campo" placeholder="Escribe tu respuesta aquí..."></textarea>
                 <input type="hidden" name="comentario_padre_id" value="{{ comentario.id }}">

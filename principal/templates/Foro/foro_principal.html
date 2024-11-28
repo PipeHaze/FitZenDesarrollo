@@ -4,37 +4,36 @@
 
 {% block content %}
 
-<h1 style="text-align: center; padding-top: 10px; padding-bottom: 10px;">Foro Principal</h1>
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-top: 10px; padding-bottom: 10px;">
+    <h1 style="text-align: center;">Foro Principal</h1>
+    <a href="{% url 'foro:agregarforo' %}" 
+       style="display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background-color: #00BFFF; border-radius: 50%; text-decoration: none; color: white; font-size: 32px; font-weight: bold; line-height: 1;">
+        +
+    </a>
+</div>
 
 {% if foro_productos %}
     <div class="foro-lista" style="padding-bottom: 50px;">
         {% for foro_producto in foro_productos %}
             <div class="producto-card">
                 <div class="producto-header">
-                    <img src="{{ foro_producto.imagen.url }}" alt="{{ foro_producto.nombre }}" class="img-producto">
+                    <img src="{{ foro_producto.imagen.url }}" alt="{{ foro_producto.titulo }}" class="img-producto">
                     <div class="producto-info">
-                        <p>{{ foro_producto.titulo }}</p>                     
-                        <span class="producto-date">{{ foro_producto.subido }} | {{ foro_producto.creado_por }}</span> <!-- Fecha de subida -->
+                        <p>{{ foro_producto.titulo }}</p>
+                        <span class="producto-date">{{ foro_producto.subido }} | {{ foro_producto.creado_por }}</span>
                     </div>
                 </div>
-                
                 <div class="producto-body">
-                    <p>{{ foro_producto.descripcion }}</p> <!-- Comentario del producto -->
+                    <p>{{ foro_producto.descripcion }}</p>
                 </div>
-
-                
-                
                 <div class="producto-footer">
-                    
                     <p><strong>{{ foro_producto.conteo_comentarios }} comentarios</strong></p>
-                    <a href="{% url 'principal:foro_publicacion' foro_producto.encrypted_slug %}" class="btn-ver-detalles bi bi-body-text"> Comentarios sobre el producto</a>
-                    
+                    <!------>
+                    <a href="{{ foro_producto.get_absolute_url }}" class="btn-ver-detalles">Comentarios sobre el producto</a>
                 </div>
-                
             </div>
         {% endfor %}
     </div>
-
 {% else %}
     <p>No hay publicaciones en el foro.</p>
 {% endif %}

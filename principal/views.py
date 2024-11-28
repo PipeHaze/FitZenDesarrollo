@@ -85,63 +85,6 @@ def buscar_pendientes(request):
     
     return render(request, 'app/productos_pendientes.html', {'productos': productos})
 
-def foro_principal(request):
-    # Obtén todos los productos
-    productos = Producto.objects.all()
-    productos_con_comentarios = []
-
-    # Itera sobre cada producto
-    for producto in productos:
-        comentarios = producto.comentarios.filter(activo=True)  # Filtra los comentarios de esta publicación
-        producto.conteo_comentarios = comentarios.count()
-        productos_con_comentarios.append(producto)
-
-    # Renderiza la plantilla con el conteo de comentarios
-    return render(request, 'foro/foro_principal.html', {"foro_productos": productos_con_comentarios})
-
-def foro_publicacion(request, encrypted_slug):
-    slug = decrypt_slug(encrypted_slug)
-    foro = get_object_or_404(Producto, slug=slug)
-    comentarios = foro.comentarios.filter(activo=True, comentario_padre=None)
-    usuarios_que_dieron_like = foro.likes.values_list('user_id', flat=True)
-
-    form = ComentarioForm()
-
-    if request.method == 'POST':
-        form = ComentarioForm(request.POST)
-        if form.is_valid():
-            nuevo_form = form.save(commit=False)
-            nuevo_form.usuario = request.user
-            nuevo_form.producto = foro
-
-            # Identificar si es respuesta a un comentario
-            comentario_padre_id = request.POST.get("comentario_padre_id")
-            if comentario_padre_id:
-                nuevo_form.comentario_padre_id = comentario_padre_id
-            
-            nuevo_form.save()
-            return redirect('principal:foro_publicacion', encrypted_slug=foro.encrypted_slug)
-
-    return render(request, 'foro/foro_publicacion.html', {
-        'foro': foro,
-        'comentarios': comentarios,
-        'form': form,
-        'usuarios_que_dieron_like': usuarios_que_dieron_like,
-    })
-
-
-def like_post(request, post_id):
-    post = get_object_or_404(Producto, id=post_id)
-    like, created = Like.objects.get_or_create(post=post, user=request.user)
-    
-    if not created:
-        # Si el like ya existe, se elimina
-        like.delete()
-        
-    # Cifrar el slug antes de redirigir
-    encrypted_slug = encrypt_slug(post.slug)
-    return redirect('principal:foro_publicacion', encrypted_slug=encrypted_slug)
-
 def ver_perfil(request, user_name=None):
     current_user = request.user
 

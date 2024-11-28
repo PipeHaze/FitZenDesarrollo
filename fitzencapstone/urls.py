@@ -27,6 +27,7 @@ urlpatterns = [
     path('pago/',include('pago.urls', namespace='pago')),
     path('pedidos/',include('pedidos.urls', namespace='pedidos')),
     path('conversacion/',include('conversacion.urls', namespace='conversacion')),
+    path('foro/',include('foro.urls', namespace='foro')),
 
 
 ]

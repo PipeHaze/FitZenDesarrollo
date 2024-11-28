@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from principal.utils import resize_image, decrypt_slug, encrypt_slug
+from foro.models import Foro
 
 class ProductManager(models.Manager):
     def get_queryset(self):
@@ -77,17 +78,22 @@ class Like(models.Model):
     post = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='likes', null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     creado_en = models.DateTimeField(auto_now_add=True)
+    foro = models.ForeignKey(Foro, on_delete=models.CASCADE, related_name='likes', null=True, blank=True)
 
     class Meta:
-        unique_together = ('post', 'user')
+        unique_together = ('post','foro' ,'user')
 
     def __str__(self):
-        return f'{self.user} likes {self.post}'
+        if self.foro:
+            return f'{self.user} likes Foro: {self.foro}'
+        if self.post:
+            return f'{self.user} likes Producto: {self.post}'
+        return f'{self.user} likes something'
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     campo = models.CharField(max_length=150)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="comentarios")
+    producto_foro = models.ForeignKey(Foro, on_delete=models.CASCADE, related_name="comentarios", null=True)
     activo = models.BooleanField(default=True)
     comentario_padre = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.CASCADE, related_name="respuestas"

@@ -1,0 +1,61 @@
+{% extends "../base.html"%}
+{% block title %} Agrega un producto {% endblock %}
+{% load static %}
+
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if messages %}
+    <div class="alert alert-warning" alert-{{ message.tags }}" role="alert">
+{% for message in messages %}
+
+    {{ message|safe }} 
+
+{% endfor %}
+</div>
+{% endif %}
+
+<style>
+    .form-control {
+        border-color: 2px solid #ccc;
+    }
+</style>
+
+<div class="col-12 col-md-6 offset-md-3" style="padding-top: 50px ; padding-bottom: 50px;">
+
+
+<h2>Publica un foro</h2>
+    <p style="font-size: 1rem; color: grey; margin-top: 5px;">Completa el siguiente formulario con los datos del foro a agregar</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="id_titulo">Título</label>
+            {{ form.titulo }}
+        </div>
+        <div class="mb-3">
+            <label for="id_descripcion">Descripcion</label>
+            {{ form.descripcion }}
+        </div>
+        <div class="mb-3">
+            <label for="id_imagen">Imagen</label>
+            {{ form.imagen }}
+        </div>
+        <div class="mb-3">
+            <label for="id_slug" aria-disabled="true">Slug</label>
+            {{ form.slug }}
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn btn-success bi bi-file-check-fill">Agregar Producto</button>
+
+    
+    </form>
+</div>
+
+<script src="{% static 'fitzen/js/creacion_de_slug.js' %}"></script>
+
+
+{% endblock %}

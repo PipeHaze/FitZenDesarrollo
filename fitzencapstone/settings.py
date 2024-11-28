@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'pago',
     'pedidos',
     'conversacion',
+    'foro',
 ]
 
 MIDDLEWARE = [
@@ -179,4 +180,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'felipe.morgado2000@gmail.com'
 EMAIL_HOST_PASSWORD = 'jbahzhkqptmtyasw'
-EMAIL_USE_TLS = True  # Asegúrate de que esté activado
+EMAIL_USE_TLS = True
