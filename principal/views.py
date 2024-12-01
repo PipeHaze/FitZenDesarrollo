@@ -57,7 +57,7 @@ def agregarproducto(request):
 
 @permission_required('app.delete_producto')
 def productos_pendientes(request):
-    productos = Producto.objects.filter(aprobado = False)
+    productos = Producto.objects.filter(aprobado = False) #es false porque primero se tiene que aprobar desde este html por el administrador
     return render(request,'app/productos_pendientes.html', {'productos': productos})
 
 @permission_required('app.add_producto')
@@ -88,7 +88,7 @@ def buscar_pendientes(request):
 def ver_perfil(request, user_name=None):
     current_user = request.user
 
-    if isinstance(current_user, AnonymousUser) or (user_name and user_name != current_user.user_name):
+    if isinstance(current_user, AnonymousUser) or (user_name and user_name != current_user.user_name): # si el nombre de usuario es distinto al inicio de sesion actual, redirige al perfil de ese usuario
         user = get_object_or_404(UserBase, user_name=user_name)
     else:
         user = current_user
@@ -103,9 +103,9 @@ def editarproducto(request, encrypted_slug):
     # Obtener el producto usando el slug desencriptado
     producto = get_object_or_404(Producto, slug=slug, en_stock=True)
     
-    # Verificar que el usuario tiene permiso para editar/eliminar el producto
+    # Verificar que el usuario tiene permiso para editar el producto
     if producto.creado_por != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("No tienes permisos para editar o eliminar este producto.")
+        return HttpResponseForbidden("No tienes permisos para editar este producto")
     
     if request.method == 'POST':
         form = EditarProducto(request.POST, request.FILES, instance=producto)
@@ -132,4 +132,4 @@ def eliminarproducto(request, slug):
     # Eliminar el producto
     producto.delete()
     
-    return redirect('principal:informacion_productos')
+    return redirect('principal:paginaprincipal')

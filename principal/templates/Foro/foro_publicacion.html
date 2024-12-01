@@ -6,31 +6,27 @@
 
 <section class="contenedor-comentarios">
     <div class="publicacion">
-        <!-- Publicación principal -->
         <div class="usuario-publico">
             <div class="avatar">
-                <!-- Imagen de usuario de la publicación -->
                 <img src="{{ foro.creado_por.perfil.imagen_perfil.url }}" alt="img"> <!--Se accede al foro como se definio en views, de la tabla producto se busca por quien fue creado -->
             </div>
             <div class="contenido-publicacion">
                 <h4>{{ foro.titulo }}</h4>
                 <ul>
-                    <li id="licito">{{ foro.creado }}</li> <!-- Fecha de publicación -->
+                    <li id="licito">{{ foro.creado }}</li>
                 </ul>
             </div>
             
         </div>
         
-        <p>{{ foro.descripcion }}</p> <!-- Texto de la publicación -->
+        <p>{{ foro.descripcion }}</p> 
         
         <div class="archivo-publicado">
-            <!-- Imagen publicada, si existe -->
             {% if foro.imagen %}
                 <img src="{{ foro.imagen.url }}" alt="Imagen publicada">
             {% endif %}
         </div>
         
-        <!-- Botón de Like -->
         <div class="botones-comentario">
             <form action="{% url 'foro:like_post' foro.id %}" method="POST">
                 {% csrf_token %}
@@ -40,7 +36,6 @@
             </form>
         </div>
         
-        <!-- Formulario de comentarios -->
         <div class="agregar-comentario">
             <h3>Deja un Comentario</h3>
             <form method="post">
@@ -51,25 +46,22 @@
             </form>
         </div>
 
-        <!-- Sección de Comentarios -->
         <div class="comentarios-usuarios">
             <h3>Comentarios</h3>
             
             {% for comentario in comentarios %}
             <div class="comentario-principal-usuario" style="padding-bottom: 50px;">
                 <div class="avatar">
-                    <img src="{{ comentario.usuario.perfil.imagen_perfil.url }}" alt="img"> <!-- Imagen de usuario del comentario -->
+                    <img src="{{ comentario.usuario.perfil.imagen_perfil.url }}" alt="img"> 
                 </div>
                 <div class="comentario">
                     <div class="usuario-comentario">
                         <div class="texto">
-                            <a href="{% url 'principal:ver_perfil' comentario.usuario.user_name %}">{{ comentario.usuario.user_name }}</a> <!-- Nombre de usuario -->
-                            <p>{{ comentario.campo }}</p> <!-- Texto del comentario -->
+                            <a href="{% url 'principal:ver_perfil' comentario.usuario.user_name %}">{{ comentario.usuario.user_name }}</a> 
+                            <p>{{ comentario.campo }}</p>
 
-                            <!-- Botón para mostrar el formulario de respuesta -->
         <a href="#" class="responder-link" data-comentario-id="{{ comentario.id }}">Responder</a>
 
-        <!-- Formulario de respuesta específico para este comentario -->
         <div class="formulario-respuesta" id="form-respuesta-{{ comentario.id }}" style="display: none;">
             <form method="post" action="{% url 'foro:foro_publicacion' foro.encrypted_slug %}">
                 {% csrf_token %}
@@ -79,7 +71,6 @@
             </form>
         </div>
 
-        <!-- Lista de respuestas anidadas -->
         {% for respuesta in comentario.respuestas.all %}
             <div class="comentario-respuesta" style="padding-bottom: 50px">
                 <div class="avatar">

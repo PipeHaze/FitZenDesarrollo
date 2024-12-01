@@ -12,7 +12,7 @@ from decimal import Decimal
 app_name = 'carritocompras'
 
 def carrito_resumen(request):
-    carritocompras = Carrito(request)
+    carritocompras = Carrito(request) #esto trae las funciones del carrito de compras para que puedan ser manipuladas desde el html
     return render(request, 'carrito/resumencarrito.html',{'carritocompras': carritocompras})
 
 def carrito_agregar(request):
@@ -36,7 +36,7 @@ def carrito_eliminar(request):
         carritocompras.eliminar(producto=producto_id)
 
         carritoqty = carritocompras.__len__()
-        carritosubtotal = carritocompras.get_subtotal_precio() if carritoqty > 0 else Decimal(0)
+        carritosubtotal = carritocompras.get_subtotal_precio() if carritoqty > 0 else Decimal(0) #cuando se elimina el producto sale 0 en vez de undefined o NaN
         carritototal = carritocompras.get_total_precio() if carritoqty > 0 else Decimal(0)
 
         response = JsonResponse({
@@ -54,7 +54,7 @@ def carrito_modificar(request):
         producto_qty = int(request.POST.get('productoqty'))
         carritocompras.modificar(producto = producto_id, qty = producto_qty)
 
-        carritoqty = carritocompras.__len__()
+        carritoqty = carritocompras.__len__() #obtiene el largo de la cantidad de productos y devuelve la cantidad
         carritosubtotal = carritocompras.get_subtotal_precio()
         response = JsonResponse({'qty': carritoqty, 'subtotal': carritosubtotal})
         

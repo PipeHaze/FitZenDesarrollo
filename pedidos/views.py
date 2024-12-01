@@ -31,9 +31,13 @@ def agregar(request):
     return response
 
 def payment_confirmation(data):
-    Pedido.objects.filter(pedido_key=data).update(estado_factura=True)
+    #confirmacion del pago
+    Pedido.objects.filter(pedido_key=data).update(estado_factura=True) #esto confirma que el pago se realizo, en la bd la deje pro True ya que si estaba en false no me dejaba
 
 def pedido_usuarios(request):
+    """
+    filtra las compras que hizo un usuario en cada cuenta
+    """
     user_id = request.user.id
     pedido = Pedido.objects.filter(user_id=user_id).filter(estado_factura=True)
     return pedido

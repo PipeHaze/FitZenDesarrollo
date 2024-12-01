@@ -13,8 +13,7 @@ from django.http import HttpResponseForbidden
 # Create your views here.
 
 def foro_principal(request):
-    # Obtén todos los foros
-    foros = Foro.objects.all()
+    foros = Foro.objects.all() #trae todos lo foros que fueron almacenados en esta tabla
     foros_con_comentarios = []
 
     for foro in foros:
@@ -22,14 +21,13 @@ def foro_principal(request):
         foro.conteo_comentarios = comentarios.count()  # Agrega el conteo de comentarios al objeto foro
         foros_con_comentarios.append(foro)
 
-    # Renderiza la plantilla
     return render(request, 'foro/foro_principal.html', {"foro_productos": foros_con_comentarios})
 
 
 def foro_publicacion(request, encrypted_slug):
     slug = decrypt_slug(encrypted_slug)
     foro = get_object_or_404(Foro, slug=slug)
-    comentarios = foro.comentarios.filter(activo=True, comentario_padre=None)
+    comentarios = foro.comentarios.filter(activo=True, comentario_padre=None) #comentario padre es el comentario, para que este pueda ser respondido
     usuarios_que_dieron_like = foro.likes.values_list('user_id', flat=True)
 
     form = ComentarioForm()

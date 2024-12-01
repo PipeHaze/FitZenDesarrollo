@@ -16,15 +16,15 @@ def carritoViews(request):
 
     carrito = Carrito(request)
     total = str(carrito.get_total_precio())
-    total = total.replace('.','')
-    total = int(total)
+    total = total.replace('.','') #separacion de miles
+    total = int(total) #mostrar el total de la compra en general
 
     print('total')
 
-    stripe.api_key = 'sk_test_51MZdL1AwsCqvVI3W02kUNOcr4HdcVKvHxef2HOwp8nwaLXhT80orXE3GTdnNxRgS3Gqmjxig7xbrlSflWqxciCyc00CTMBsHHN'
-    intent = stripe.PaymentIntent.create(
+    stripe.api_key = 'sk_test_51MZdL1AwsCqvVI3W02kUNOcr4HdcVKvHxef2HOwp8nwaLXhT80orXE3GTdnNxRgS3Gqmjxig7xbrlSflWqxciCyc00CTMBsHHN' #la key de stripe para procesar el pago
+    intent = stripe.PaymentIntent.create( #estas son las variables que vienen definidas por stripe, que se encuentran en la pagina
         amount= total,
-        currency='clp',
+        currency='clp', #formato de moneda chilena
         metadata={'userid': request.user.id}
     )
 
@@ -56,7 +56,7 @@ def order_placed(request):
     carrito = Carrito(request)
 
     for i in carrito:
-        carrito.disminuirStock(i["id_producto"]) #esta funcion es llaamda para que al procesar el pago descuente los productos
+        carrito.disminuirStock(i["id_producto"]) #esta funcion es llamada para que al procesar el pago descuente los productos
 
     carrito.clear()
     return render(request, 'pago/pedidorealizado.html')

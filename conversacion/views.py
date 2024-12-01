@@ -15,7 +15,7 @@ def nueva_conversacion(request, encrypted_slug):
     if producto.creado_por == request.user:
         return redirect('principal:paginaprincipal')
 
-    conversaciones = Conversacion.objects.filter(producto=producto).filter(miembros__in=[request.user.id])
+    conversaciones = Conversacion.objects.filter(producto=producto).filter(miembros__in=[request.user.id]) #filtra las conversaciones por el producto y el usuario que quiere iniciar la conversacion
 
     if conversaciones.exists():
         pass
@@ -54,6 +54,9 @@ def inbox(request):
     })
 
 def detalle(request, pk):
+    """
+    muestra el detalle de la conversacion entre un usuario y el dueño que hizo la publicacion
+    """
     conversacion = Conversacion.objects.filter(miembros__in=[request.user.id]).get(pk=pk)
 
     if request.method == 'POST':
