@@ -17,14 +17,10 @@
         }
     </style>
 
-<div class="container-fluid">
-    <div class="">
-      <div class="">
-        <div class="">
+<div class="container-fluid" style="padding-bottom: 50px;">
           <div class="container">
-            <div class="">
               <div id="payment-form" class="col-12 col-lg-6 mx-auto">
-                <h3 class="mb-3">Direccion de Envio</h3>
+                <h3 class="mb-3" style="padding-top: 50px;">Direccion de Envio</h3>
                 <!-- Error messages in this element -->
                 <div id="card-errors" class="a" role="alert"></div>
                 <form id="payment-form" method="post">
@@ -92,6 +88,9 @@
                   <hr class="my-4">
                   <button id="submit" class="btn btn-primary w-100 fw-bold" data-secret="{{ client_secret }}">Pagar</button>
               </form>
+              </div>
+          </div>
+</div>
               
               <script>
                   var CSRF_TOKEN = '{{ csrf_token }}';
