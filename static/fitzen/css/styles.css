@@ -318,7 +318,6 @@
 }
 
 
-
 /* FORO DETALLE */
 .contenedor-comentarios {
     max-width: 650px;
@@ -596,7 +595,6 @@ body {
 
 .item{
     flex: 1;
-    border: 1px solid black;
     text-align: left;
     padding: 20px;
 }
