@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-top: 10px; padding-bottom: 10px;">
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-top: 40px; padding-bottom: 10px;">
     <h1 style="text-align: center;">Foro Principal</h1>
     <a href="{% url 'foro:agregarforo' %}" 
        style="display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; background-color: #00BFFF; border-radius: 50%; text-decoration: none; color: white; font-size: 32px; font-weight: bold; line-height: 1;">
@@ -46,7 +46,7 @@
 </div>
 
 {% else %}
-    <p>No hay publicaciones en el foro.</p>
+    <h3 style="text-align: center; padding-top: 50px;">No hay publicaciones en el foro <br>Se el primero en Crear uno.</h3>
 {% endif %}
 
 <script>

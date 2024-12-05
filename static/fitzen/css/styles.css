@@ -314,7 +314,10 @@
 
 .btn-ver-detalles:hover {
     background-color: #155bb5;
+    color: black;
 }
+
+
 
 /* FORO DETALLE */
 .contenedor-comentarios {
@@ -593,7 +596,7 @@ body {
 
 .item{
     flex: 1;
-    border: 1px solid gray;
+    border: 1px solid black;
     text-align: left;
     padding: 20px;
 }
